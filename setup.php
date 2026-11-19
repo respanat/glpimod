@@ -33,7 +33,7 @@
 use Glpi\Plugin\Hooks;
 use GlpiPlugin\Glpimod\BrandManager;
 
-const PLUGIN_GLPIMOD_VERSION = "1.3.0";
+const PLUGIN_GLPIMOD_VERSION = "1.4.0";
 
 function plugin_init_glpimod()
 {
@@ -42,6 +42,12 @@ function plugin_init_glpimod()
     $PLUGIN_HOOKS['config_page']['glpimod'] = './front/uibranding.php';
     if (Plugin::isPluginActive("glpimod")) {
         $CFG_GLPI["app_name"] = BrandManager::getCurrentTitle();
+
+        // Self-service home page: real clock and seasonal decoration (the script does nothing on other pages)
+        if (BrandManager::isHelpdeskSceneEnabled()) {
+            $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]["glpimod"] = "./public/helpdesk_scene.js";
+            $PLUGIN_HOOKS[Hooks::ADD_CSS]["glpimod"] = "./css/glpimod_helpdesk.css";
+        }
         if (BrandManager::isLoginPageModified()) {
             // Allow public/background.php (login background image/video) to be served without an active session
             \Glpi\Http\Firewall::addPluginStrategyForLegacyScripts("glpimod", '/^\/background.php$/', \Glpi\Http\Firewall::STRATEGY_NO_CHECK);

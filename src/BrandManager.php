@@ -671,5 +671,70 @@ public static function getLoginOpacity(): string
     return $ini["login_opacity"] ?? "0.65";
 }
 
-}
 
+    // ------------------------------------------------------------------ generic settings (modifiers.ini)
+
+    /**
+     * Reads a setting from modifiers.ini.
+     */
+    public static function getModifier(string $key, string $default = ''): string
+    {
+        $file = self::FILES_DIR . "/modifiers.ini";
+        if (!file_exists($file)) {
+            return $default;
+        }
+        $ini = parse_ini_file($file) ?: [];
+        return isset($ini[$key]) ? (string) $ini[$key] : $default;
+    }
+
+    /**
+     * Writes several settings to modifiers.ini (values must be simple tokens: letters, digits, dot, dash).
+     *
+     * @param array<string, string> $values
+     */
+    public function setModifiers(array $values): void
+    {
+        $file = self::FILES_DIR . "/modifiers.ini";
+        if (!file_exists($file) && !self::initModifiers()) {
+            return;
+        }
+        $ini = parse_ini_file($file) ?: [];
+        foreach ($values as $key => $value) {
+            $ini[$key] = preg_replace('/[^A-Za-z0-9._-]/', '', (string) $value);
+        }
+        $lines = [];
+        foreach ($ini as $key => $value) {
+            $lines[] = "$key=$value";
+        }
+        file_put_contents($file, implode("\n", $lines));
+    }
+
+    /**
+     * Settings of the self-service home page (real clock and seasonal decoration).
+     *
+     * @return array{clock: bool, clock_format: string, season: string, effects: array{snow: bool, lights: bool, decor: bool}}
+     */
+    public static function getHelpdeskSettings(): array
+    {
+        $season = self::getModifier('season', 'none');
+        return [
+            'clock' => self::getModifier('helpdesk_clock', '0') === '1',
+            'clock_format' => self::getModifier('clock_format', '12') === '24' ? '24' : '12',
+            'season' => in_array($season, ['none', 'christmas', 'auto'], true) ? $season : 'none',
+            'effects' => [
+                'snow' => self::getModifier('xmas_snow', '1') === '1',
+                'lights' => self::getModifier('xmas_lights', '1') === '1',
+                'decor' => self::getModifier('xmas_decor', '1') === '1',
+            ],
+        ];
+    }
+
+    /**
+     * True when something has to be loaded on the self-service home page.
+     */
+    public static function isHelpdeskSceneEnabled(): bool
+    {
+        $settings = self::getHelpdeskSettings();
+        return $settings['clock'] || $settings['season'] !== 'none';
+    }
+}

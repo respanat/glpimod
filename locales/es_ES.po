@@ -111,6 +111,9 @@ msgstr "Favicon"
 msgid "Title and favicon"
 msgstr "Título y favicon"
 
+msgid "Self-service portal"
+msgstr "Portal de autoservicio"
+
 msgid "Page title"
 msgstr "Título de la página"
 
@@ -260,6 +263,57 @@ msgstr "¿Quitar este logo por color y usar el logo principal?"
 
 msgid "Use main logo"
 msgstr "Usar logo principal"
+
+msgid "Clock"
+msgstr "Reloj"
+
+msgid "Show the real time on the clock of the illustration"
+msgstr "Mostrar la hora real en el reloj de la ilustración"
+
+msgid "Replaces the fixed \"9:00\" with the current time of each user's device."
+msgstr "Reemplaza el \"9:00\" fijo por la hora actual del dispositivo de cada usuario."
+
+msgid "12 hours (4:35)"
+msgstr "12 horas (4:35)"
+
+msgid "24 hours (16:35)"
+msgstr "24 horas (16:35)"
+
+msgid "Seasonal mode"
+msgstr "Modo de temporada"
+
+msgid "Off"
+msgstr "Desactivado"
+
+msgid "Automatic: Christmas from 1 December to 6 January"
+msgstr "Automático: Navidad del 1 de diciembre al 6 de enero"
+
+msgid "Christmas (always on)"
+msgstr "Navidad (siempre activo)"
+
+msgid "Christmas effects:"
+msgstr "Efectos navideños:"
+
+msgid "Snow on the furniture, baubles on the plant and a gift"
+msgstr "Nieve sobre los muebles, bolitas en la planta y un regalo"
+
+msgid "String of lights along the top"
+msgstr "Guirnalda de luces en la parte superior"
+
+msgid "Gentle snowfall"
+msgstr "Nieve cayendo suavemente"
+
+msgid "Animations are disabled for users who ask their system to reduce motion."
+msgstr "Las animaciones se desactivan para quienes configuraron su sistema para reducir el movimiento."
+
+msgid "The clock and the furniture decoration apply to the default illustrations of the portal. If an entity uses other illustrations, only the lights and the snowfall are shown."
+msgstr "El reloj y la decoración de los muebles aplican a las ilustraciones predeterminadas del portal. Si una entidad usa otras ilustraciones, solo se muestran las luces y la nieve."
+
+msgid "How can we help you?"
+msgstr "¿Cómo podemos ayudarte?"
+
+msgid "Automatic mode: the preview shows the Christmas decoration even outside the season."
+msgstr "Modo automático: la vista previa muestra la decoración navideña aunque no sea temporada."
 
 msgid "Logos and favicon may need a hard refresh (Ctrl+F5) to show up."
 msgstr "Puede que los logos y el favicon necesiten recargar con Ctrl+F5 para verse."

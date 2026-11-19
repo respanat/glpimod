@@ -46,6 +46,7 @@ if ($type === 'config') {
             'opacity' => (float) BrandManager::getLoginOpacity(),
             'video'   => BrandManager::hasBackgroundVideo(),
             'version' => BrandManager::getResourceInfo('background_video')['version'],
+            'helpdesk' => BrandManager::getHelpdeskSettings(),
         ]),
         200,
         ['Content-Type' => 'application/json']

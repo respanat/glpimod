@@ -111,6 +111,9 @@ msgstr ""
 msgid "Title and favicon"
 msgstr ""
 
+msgid "Self-service portal"
+msgstr ""
+
 msgid "Page title"
 msgstr ""
 
@@ -259,6 +262,57 @@ msgid "Remove this colour-specific logo and use the main logo instead?"
 msgstr ""
 
 msgid "Use main logo"
+msgstr ""
+
+msgid "Clock"
+msgstr ""
+
+msgid "Show the real time on the clock of the illustration"
+msgstr ""
+
+msgid "Replaces the fixed \"9:00\" with the current time of each user's device."
+msgstr ""
+
+msgid "12 hours (4:35)"
+msgstr ""
+
+msgid "24 hours (16:35)"
+msgstr ""
+
+msgid "Seasonal mode"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "Automatic: Christmas from 1 December to 6 January"
+msgstr ""
+
+msgid "Christmas (always on)"
+msgstr ""
+
+msgid "Christmas effects:"
+msgstr ""
+
+msgid "Snow on the furniture, baubles on the plant and a gift"
+msgstr ""
+
+msgid "String of lights along the top"
+msgstr ""
+
+msgid "Gentle snowfall"
+msgstr ""
+
+msgid "Animations are disabled for users who ask their system to reduce motion."
+msgstr ""
+
+msgid "The clock and the furniture decoration apply to the default illustrations of the portal. If an entity uses other illustrations, only the lights and the snowfall are shown."
+msgstr ""
+
+msgid "How can we help you?"
+msgstr ""
+
+msgid "Automatic mode: the preview shows the Christmas decoration even outside the season."
 msgstr ""
 
 msgid "Logos and favicon may need a hard refresh (Ctrl+F5) to show up."

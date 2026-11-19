@@ -157,6 +157,19 @@ class UIBranding
             $brandManager->setLoginOpacity((float) $data['login_opacity']);
         }
 
+        // --- Self-service home page
+        if (isset($data['helpdesk_clock'])) {
+            $season = (string) ($data['season'] ?? 'none');
+            $brandManager->setModifiers([
+                'helpdesk_clock' => $data['helpdesk_clock'] === '1' ? '1' : '0',
+                'clock_format' => ($data['clock_format'] ?? '12') === '24' ? '24' : '12',
+                'season' => in_array($season, ['none', 'christmas', 'auto'], true) ? $season : 'none',
+                'xmas_snow' => ($data['xmas_snow'] ?? '0') === '1' ? '1' : '0',
+                'xmas_lights' => ($data['xmas_lights'] ?? '0') === '1' ? '1' : '0',
+                'xmas_decor' => ($data['xmas_decor'] ?? '0') === '1' ? '1' : '0',
+            ]);
+        }
+
         Session::addMessageAfterRedirect(__('Configuration saved', 'glpimod'));
     }
 
@@ -287,6 +300,8 @@ class UIBranding
             "logos" => $logos,
             "favicon" => BrandManager::getResourceInfo('favicon'),
             "version" => PLUGIN_GLPIMOD_VERSION,
+            "helpdesk" => BrandManager::getHelpdeskSettings(),
+            "plugin_url" => $CFG_GLPI['root_doc'] . "/plugins/glpimod",
         ]);
         return true;
     }

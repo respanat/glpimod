@@ -79,6 +79,15 @@
                        background:#fff; border:1px solid rgba(0,0,0,.1); border-bottom:none; max-width:100%; }
     .glpimod-browser-tab img { width:16px; height:16px; }
     .glpimod-browser-bar { height:10px; background:#fff; border:1px solid rgba(0,0,0,.1); border-top:none; border-radius:0 0 8px 8px; }
+    .glpimod-hd-preview { position:relative; overflow:hidden; border-radius:10px; height:250px;
+                          background:var(--glpi-helpdesk-header, #c9e2f4); border:1px solid rgba(0,0,0,.08); }
+    .glpimod-hd-preview .scene { position:absolute; bottom:0; width:36%; height:90%; display:flex; align-items:flex-end; overflow:hidden; }
+    .glpimod-hd-preview .scene svg { width:100%; height:auto; aspect-ratio:842/596; }
+    .glpimod-hd-preview .scene-left { left:0; }
+    .glpimod-hd-preview .scene-right { right:0; }
+    .glpimod-hd-title { position:absolute; top:42%; left:50%; transform:translate(-50%,-50%); width:30%; text-align:center;
+                        font-weight:600; font-size:1rem; color:#2d3748; }
+    .glpimod-hd-search { height:14px; border-radius:4px; background:#fff; margin-top:10px; box-shadow:0 1px 2px rgba(0,0,0,.1); }
     .glpimod-section-title { font-size:.75rem; text-transform:uppercase; letter-spacing:.04em; color:var(--tblr-muted, #667382); font-weight:600; }
 </style>
 
@@ -121,6 +130,11 @@
                 <li class="nav-item" role="presentation">
                     <a href="#glpimod-tab-logos" class="nav-link" data-bs-toggle="tab" role="tab">
                         <i class="ti ti-badge me-2"></i>{{ __('Logos', 'glpimod') }}
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a href="#glpimod-tab-helpdesk" class="nav-link" data-bs-toggle="tab" role="tab">
+                        <i class="ti ti-lifebuoy me-2"></i>{{ __('Self-service portal', 'glpimod') }}
                     </a>
                 </li>
             </ul>
@@ -332,6 +346,60 @@
                     </div>
                 {% endfor %}
             </div>
+            {# ================= TAB: self-service portal ================= #}
+            <div class="tab-pane" id="glpimod-tab-helpdesk" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-xl-5">
+                        <div class="glpimod-section-title mb-2">{{ __('Clock', 'glpimod') }}</div>
+                        {{ ui.switch('helpdesk_clock', helpdesk.clock, __('Show the real time on the clock of the illustration', 'glpimod'), __('Replaces the fixed "9:00" with the current time of each user\'s device.', 'glpimod')) }}
+                        <div class="d-flex align-items-center gap-3 mt-2 ms-5">
+                            <label class="form-check form-check-inline mb-0">
+                                <input class="form-check-input glpimod-hd" type="radio" name="clock_format" value="12" {{ helpdesk.clock_format != '24' ? 'checked' : '' }}/>
+                                <span class="form-check-label">{{ __('12 hours (4:35)', 'glpimod') }}</span>
+                            </label>
+                            <label class="form-check form-check-inline mb-0">
+                                <input class="form-check-input glpimod-hd" type="radio" name="clock_format" value="24" {{ helpdesk.clock_format == '24' ? 'checked' : '' }}/>
+                                <span class="form-check-label">{{ __('24 hours (16:35)', 'glpimod') }}</span>
+                            </label>
+                        </div>
+
+                        <div class="glpimod-section-title mt-4 mb-2">{{ __('Seasonal mode', 'glpimod') }}</div>
+                        <select class="form-select glpimod-hd" name="season" id="glpimod_season">
+                            <option value="none" {{ helpdesk.season == 'none' ? 'selected' : '' }}>{{ __('Off', 'glpimod') }}</option>
+                            <option value="auto" {{ helpdesk.season == 'auto' ? 'selected' : '' }}>{{ __('Automatic: Christmas from 1 December to 6 January', 'glpimod') }}</option>
+                            <option value="christmas" {{ helpdesk.season == 'christmas' ? 'selected' : '' }}>{{ __('Christmas (always on)', 'glpimod') }}</option>
+                        </select>
+                        <div id="glpimod_xmas_effects" class="mt-3 ms-1">
+                            <div class="form-hint mb-2">{{ __('Christmas effects:', 'glpimod') }}</div>
+                            {% for key, label in {
+                                'xmas_decor': __('Snow on the furniture, baubles on the plant and a gift', 'glpimod'),
+                                'xmas_lights': __('String of lights along the top', 'glpimod'),
+                                'xmas_snow': __('Gentle snowfall', 'glpimod')
+                            } %}
+                                {% set effect = key|replace({'xmas_': ''}) %}
+                                <input type="hidden" name="{{ key }}" value="0"/>
+                                <label class="form-check mb-1">
+                                    <input class="form-check-input glpimod-hd" type="checkbox" name="{{ key }}" value="1" {{ helpdesk.effects[effect] ? 'checked' : '' }}/>
+                                    <span class="form-check-label">{{ label }}</span>
+                                </label>
+                            {% endfor %}
+                            <div class="form-hint mt-2">{{ __('Animations are disabled for users who ask their system to reduce motion.', 'glpimod') }}</div>
+                        </div>
+                        <div class="form-hint mt-3">
+                            <i class="ti ti-info-circle me-1"></i>{{ __('The clock and the furniture decoration apply to the default illustrations of the portal. If an entity uses other illustrations, only the lights and the snowfall are shown.', 'glpimod') }}
+                        </div>
+                    </div>
+                    <div class="col-xl-7">
+                        <div class="glpimod-section-title mb-2">{{ __('Preview', 'glpimod') }}</div>
+                        <div class="glpimod-hd-preview" id="glpimod_hd_preview">
+                            <div class="scene scene-left">{{ render_scene('shelves') }}</div>
+                            <div class="glpimod-hd-title">{{ __('How can we help you?', 'glpimod') }}<div class="glpimod-hd-search"></div></div>
+                            <div class="scene scene-right">{{ render_scene('desk') }}</div>
+                        </div>
+                        <div class="form-hint mt-2" id="glpimod_hd_auto_hint">{{ __('Automatic mode: the preview shows the Christmas decoration even outside the season.', 'glpimod') }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="card-footer d-flex align-items-center gap-2 position-sticky bottom-0 bg-body" style="z-index:5;">
@@ -345,6 +413,8 @@
     </div>
 </form>
 
+<link rel="stylesheet" href="{{ plugin_url }}/css/glpimod_helpdesk.css?v={{ version }}"/>
+<script src="{{ plugin_url }}/public/helpdesk_scene.js?v={{ version }}"></script>
 <script>
 (function () {
     'use strict';
@@ -402,6 +472,35 @@
                 })
                 .catch(function () {});
         }, 2000);
+    }
+
+    // Self-service portal preview
+    const hdPreview = document.getElementById('glpimod_hd_preview');
+    function hdConfig() {
+        const value = function (name) {
+            const checked = form.querySelector('[name="' + name + '"]:checked');
+            return checked ? checked.value : (form.querySelector('select[name="' + name + '"]') || {}).value;
+        };
+        const season = value('season');
+        document.getElementById('glpimod_xmas_effects').hidden = season === 'none';
+        document.getElementById('glpimod_hd_auto_hint').hidden = season !== 'auto';
+        return {
+            clock: !!form.querySelector('input[type=checkbox][name="helpdesk_clock"]:checked'),
+            clock_format: value('clock_format') || '12',
+            season: season === 'auto' ? 'christmas' : season, // the preview always shows the decoration
+            effects: {
+                decor: !!form.querySelector('input[type=checkbox][name="xmas_decor"]:checked'),
+                lights: !!form.querySelector('input[type=checkbox][name="xmas_lights"]:checked'),
+                snow: !!form.querySelector('input[type=checkbox][name="xmas_snow"]:checked'),
+            },
+        };
+    }
+    if (hdPreview && window.GlpimodHelpdeskScene) {
+        const refresh = function () { GlpimodHelpdeskScene.render(hdPreview, hdConfig()); };
+        form.querySelectorAll('.glpimod-hd, input[type=checkbox][name="helpdesk_clock"]').forEach(function (input) {
+            input.addEventListener('change', refresh);
+        });
+        refresh();
     }
 
     // Preview selected files before saving

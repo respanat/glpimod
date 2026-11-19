@@ -1,0 +1,44 @@
+/*
+ * glpimod - GLPI Mod: self-service home page (real clock and seasonal decoration)
+ */
+.glpimod-overlay {
+    position: absolute;
+    pointer-events: none;
+    overflow: visible;
+}
+
+/* string of lights along the top of the banner */
+.glpimod-garland {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 42px;
+    pointer-events: none;
+    z-index: 2;
+}
+.glpimod-bulb {
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, .6));
+    animation: glpimod-twinkle 2.4s ease-in-out infinite;
+}
+.glpimod-bulb-1 { animation-delay: .8s; }
+.glpimod-bulb-2 { animation-delay: 1.6s; }
+
+@keyframes glpimod-twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .45; }
+}
+
+/* gentle snowfall over the banner */
+.glpimod-snow {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .glpimod-bulb { animation: none; }
+}
