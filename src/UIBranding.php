@@ -53,6 +53,16 @@ class UIBranding
     {
         $brandManager = new BrandManager();
 
+        // --- Background video compression (runs in the background)
+        if (isset($data['compress_video'])) {
+            if (VideoCompressor::start()) {
+                Session::addMessageAfterRedirect(__('Compressing the background video in the background. You can keep working; the login page keeps the current video until it finishes.', 'glpimod'));
+            } else {
+                Session::addMessageAfterRedirect(__('The video compression could not be started.', 'glpimod'), false, ERROR);
+            }
+            return;
+        }
+
         // --- Deletions requested through the "remove" buttons
         if (!empty($data['delete_resource'])) {
             $this->delete($brandManager, (string) $data['delete_resource']);
@@ -67,9 +77,13 @@ class UIBranding
         if ($this->hasUpload($files, 'background')) {
             $backgroundChanged = $brandManager->uploadResource("background", $files['background']);
         }
-        if ($this->hasUpload($files, 'background_video')
-            && $brandManager->uploadResource("background_video", $files['background_video'])) {
-            Session::addMessageAfterRedirect(__('Background video uploaded', 'glpimod'));
+        if ($this->hasUpload($files, 'background_video')) {
+            if (VideoCompressor::isRunning()) {
+                Session::addMessageAfterRedirect(__('The video is being compressed: wait for it to finish before uploading another one.', 'glpimod'), false, ERROR);
+            } else if ($brandManager->uploadResource("background_video", $files['background_video'])) {
+                VideoCompressor::clearResult();
+                Session::addMessageAfterRedirect(__('Background video uploaded', 'glpimod'));
+            }
         }
         foreach (BrandManager::LOGO_RESOURCES as $logo) {
             if ($this->hasUpload($files, $logo)) {
@@ -142,6 +156,11 @@ class UIBranding
     private function delete(BrandManager $brandManager, string $target): void
     {
         if ($target === 'background_video') {
+            if (VideoCompressor::isRunning()) {
+                Session::addMessageAfterRedirect(__('The video is being compressed: wait for it to finish before uploading another one.', 'glpimod'), false, ERROR);
+                return;
+            }
+            VideoCompressor::clearResult();
             if ($brandManager->deleteBackgroundVideo()) {
                 Session::addMessageAfterRedirect(__('Background video removed: the login page now uses the background image', 'glpimod'));
             }
@@ -229,6 +248,13 @@ class UIBranding
         }
 
         $video = BrandManager::getResourceInfo('background_video');
+        $compression = VideoCompressor::getStatus();
+        if (in_array($compression['state'], ['done', 'nogain', 'failed'], true)) {
+            // final results are shown once
+            VideoCompressor::clearResult();
+        }
+        $compression['old_label'] = \Toolbox::getSize($compression['old_size']);
+        $compression['new_label'] = \Toolbox::getSize($compression['new_size']);
         $maxUpload = min(self::iniBytes((string) ini_get('upload_max_filesize')), self::iniBytes((string) ini_get('post_max_size')));
 
         TemplateRenderer::getInstance()->display('@glpimod/uibranding.html.twig', [
@@ -242,6 +268,9 @@ class UIBranding
             "background" => BrandManager::getResourceInfo('background'),
             "video" => $video,
             "video_warning" => $video['size'] > BrandManager::VIDEO_WARNING_SIZE,
+            "compression" => $compression,
+            "ffmpeg_available" => VideoCompressor::isAvailable(),
+            "compress_status_url" => $CFG_GLPI['root_doc'] . "/plugins/glpimod/front/compress.status.php",
             "max_upload" => \Toolbox::getSize($maxUpload),
             "video_warning_label" => \Toolbox::getSize(BrandManager::VIDEO_WARNING_SIZE),
             "logos" => $logos,

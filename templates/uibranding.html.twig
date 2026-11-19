@@ -171,19 +171,58 @@
                         </div>
 
                         <div class="glpimod-section-title mt-4 mb-2">{{ __('Background video', 'glpimod') }} <span class="text-lowercase fw-normal">({{ __('optional', 'glpimod') }})</span></div>
-                        {% if video.exists %}
-                            <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                                <span class="badge bg-green-lt"><i class="ti ti-movie me-1"></i>{{ __('Video uploaded', 'glpimod') }} · {{ video.size_label }}</span>
-                                <button type="submit" name="delete_resource" value="background_video" class="btn btn-sm btn-ghost-danger"
-                                        onclick="return confirm('{{ __('Remove the background video? The login page will use the background image.', 'glpimod')|e('js') }}');">
-                                    <i class="ti ti-trash me-1"></i>{{ __('Remove video', 'glpimod') }}
-                                </button>
+                        {% if compression.state == 'done' %}
+                            <div class="alert alert-success py-2 mb-2">
+                                <i class="ti ti-circle-check me-1"></i>{{ __('Video compressed: %1$s → %2$s. The login page already uses the new version.', 'glpimod')|format(compression.old_label, compression.new_label) }}
                             </div>
-                            {% if video_warning %}
-                                <div class="alert alert-warning py-2 mb-2">
-                                    <i class="ti ti-alert-triangle me-1"></i>
-                                    {{ __('The video is larger than %s. Every visitor downloads it when opening the login page; compress it (for example 1080p, 20-30 seconds, H.264) for a faster login.', 'glpimod')|format(video_warning_label) }}
+                        {% elseif compression.state == 'nogain' %}
+                            <div class="alert alert-info py-2 mb-2">
+                                <i class="ti ti-info-circle me-1"></i>{{ __('The video was already optimized: compressing it would not make it smaller, so the original was kept.', 'glpimod') }}
+                            </div>
+                        {% elseif compression.state == 'failed' %}
+                            <div class="alert alert-danger py-2 mb-2">
+                                <i class="ti ti-alert-circle me-1"></i>{{ __('The video could not be compressed. The original video was kept.', 'glpimod') }}
+                            </div>
+                        {% endif %}
+
+                        {% if video.exists %}
+                            {% if compression.state == 'running' %}
+                                <div id="glpimod_compress" class="border rounded-3 p-2 mb-2" data-status-url="{{ compress_status_url }}">
+                                    <div class="d-flex align-items-center gap-2 small mb-1">
+                                        <span class="spinner-border spinner-border-sm text-primary"></span>
+                                        <span>{{ __('Compressing the video in the background…', 'glpimod') }}</span>
+                                        <span class="ms-auto fw-bold" id="glpimod_compress_percent">{{ compression.percent }}%</span>
+                                    </div>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar" id="glpimod_compress_bar" style="width: {{ compression.percent }}%"></div>
+                                    </div>
+                                    <div class="form-hint mt-1">{{ __('You can leave this page; the login page keeps the current video until it finishes.', 'glpimod') }}</div>
                                 </div>
+                            {% else %}
+                                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                                    <span class="badge bg-green-lt"><i class="ti ti-movie me-1"></i>{{ __('Video uploaded', 'glpimod') }} · {{ video.size_label }}</span>
+                                    {% if ffmpeg_available %}
+                                        <button type="submit" name="compress_video" value="1" class="btn btn-sm {{ video_warning ? 'btn-primary' : 'btn-outline-primary' }}"
+                                                onclick="return confirm('{{ __('Compress the background video? It runs in the background and replaces the video only if the result is smaller.', 'glpimod')|e('js') }}');">
+                                            <i class="ti ti-arrows-minimize me-1"></i>{{ __('Compress', 'glpimod') }}
+                                        </button>
+                                    {% endif %}
+                                    <button type="submit" name="delete_resource" value="background_video" class="btn btn-sm btn-ghost-danger"
+                                            onclick="return confirm('{{ __('Remove the background video? The login page will use the background image.', 'glpimod')|e('js') }}');">
+                                        <i class="ti ti-trash me-1"></i>{{ __('Remove video', 'glpimod') }}
+                                    </button>
+                                </div>
+                                {% if video_warning %}
+                                    <div class="alert alert-warning py-2 mb-2">
+                                        <i class="ti ti-alert-triangle me-1"></i>
+                                        {% if ffmpeg_available %}
+                                            {{ __('The video is larger than %s. Every visitor downloads it when opening the login page: use "Compress" to reduce it.', 'glpimod')|format(video_warning_label) }}
+                                        {% else %}
+                                            {{ __('The video is larger than %s. Every visitor downloads it when opening the login page; compress it (for example 1080p, 20-30 seconds, H.264) for a faster login.', 'glpimod')|format(video_warning_label) }}
+                                            <div class="mt-1 small">{{ __('To compress it from here, install ffmpeg on the server:', 'glpimod') }} <code>sudo apt install ffmpeg</code></div>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         {% else %}
                             <div class="form-hint mb-2">{{ __('No video uploaded: the login page uses the background image.', 'glpimod') }}</div>
@@ -317,6 +356,27 @@
     const titlePreview = document.getElementById('glpimod_title_preview');
     if (title) {
         title.addEventListener('input', function () { titlePreview.textContent = this.value; });
+    }
+
+    // Background video compression progress
+    const compress = document.getElementById('glpimod_compress');
+    if (compress) {
+        const bar = document.getElementById('glpimod_compress_bar');
+        const percent = document.getElementById('glpimod_compress_percent');
+        const timer = setInterval(function () {
+            fetch(compress.dataset.statusUrl, {credentials: 'same-origin', headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                .then(function (r) { return r.json(); })
+                .then(function (status) {
+                    if (status.state === 'running') {
+                        bar.style.width = status.percent + '%';
+                        percent.textContent = status.percent + '%';
+                    } else {
+                        clearInterval(timer);
+                        window.location.reload();
+                    }
+                })
+                .catch(function () {});
+        }, 2000);
     }
 
     // Preview selected files before saving

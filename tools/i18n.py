@@ -78,6 +78,18 @@ es = {
 'Remove this colour-specific logo and use the main logo instead?': '¿Quitar este logo por color y usar el logo principal?',
 'Use main logo': 'Usar logo principal',
 'Logos and favicon may need a hard refresh (Ctrl+F5) to show up.': 'Puede que los logos y el favicon necesiten recargar con Ctrl+F5 para verse.',
+'Compressing the background video in the background. You can keep working; the login page keeps the current video until it finishes.': 'Comprimiendo el video de fondo en segundo plano. Puedes seguir trabajando; el inicio de sesión mantiene el video actual hasta que termine.',
+'The video compression could not be started.': 'No se pudo iniciar la compresión del video.',
+'The video is being compressed: wait for it to finish before uploading another one.': 'El video se está comprimiendo: espera a que termine antes de cambiarlo.',
+'Video compressed: %1$s → %2$s. The login page already uses the new version.': 'Video comprimido: %1$s → %2$s. El inicio de sesión ya usa la nueva versión.',
+'The video was already optimized: compressing it would not make it smaller, so the original was kept.': 'El video ya estaba optimizado: comprimirlo no lo hacía más liviano, así que se conservó el original.',
+'The video could not be compressed. The original video was kept.': 'No se pudo comprimir el video. Se conservó el video original.',
+'Compressing the video in the background…': 'Comprimiendo el video en segundo plano…',
+'You can leave this page; the login page keeps the current video until it finishes.': 'Puedes salir de esta página; el inicio de sesión mantiene el video actual hasta que termine.',
+'Compress the background video? It runs in the background and replaces the video only if the result is smaller.': '¿Comprimir el video de fondo? Se hace en segundo plano y solo reemplaza el video si el resultado es más liviano.',
+'Compress': 'Comprimir',
+'The video is larger than %s. Every visitor downloads it when opening the login page: use "Compress" to reduce it.': 'El video pesa más de %s. Cada visitante lo descarga al abrir el inicio de sesión: usa "Comprimir" para reducirlo.',
+'To compress it from here, install ffmpeg on the server:': 'Para comprimirlo desde aquí, instala ffmpeg en el servidor:',
 }
 missing = [i for i in ids if i not in es]
 if missing:

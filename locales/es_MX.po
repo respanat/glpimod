@@ -30,6 +30,15 @@ msgstr "%1$s fue rechazado: su contenido (%2$s) no corresponde a la extensión .
 msgid "could not be saved"
 msgstr "no se pudo guardar"
 
+msgid "Compressing the background video in the background. You can keep working; the login page keeps the current video until it finishes."
+msgstr "Comprimiendo el video de fondo en segundo plano. Puedes seguir trabajando; el inicio de sesión mantiene el video actual hasta que termine."
+
+msgid "The video compression could not be started."
+msgstr "No se pudo iniciar la compresión del video."
+
+msgid "The video is being compressed: wait for it to finish before uploading another one."
+msgstr "El video se está comprimiendo: espera a que termine antes de cambiarlo."
+
 msgid "Background video uploaded"
 msgstr "Video de fondo cargado"
 
@@ -135,8 +144,29 @@ msgstr "Video de fondo"
 msgid "optional"
 msgstr "opcional"
 
+msgid "Video compressed: %1$s → %2$s. The login page already uses the new version."
+msgstr "Video comprimido: %1$s → %2$s. El inicio de sesión ya usa la nueva versión."
+
+msgid "The video was already optimized: compressing it would not make it smaller, so the original was kept."
+msgstr "El video ya estaba optimizado: comprimirlo no lo hacía más liviano, así que se conservó el original."
+
+msgid "The video could not be compressed. The original video was kept."
+msgstr "No se pudo comprimir el video. Se conservó el video original."
+
+msgid "Compressing the video in the background…"
+msgstr "Comprimiendo el video en segundo plano…"
+
+msgid "You can leave this page; the login page keeps the current video until it finishes."
+msgstr "Puedes salir de esta página; el inicio de sesión mantiene el video actual hasta que termine."
+
 msgid "Video uploaded"
 msgstr "Video cargado"
+
+msgid "Compress the background video? It runs in the background and replaces the video only if the result is smaller."
+msgstr "¿Comprimir el video de fondo? Se hace en segundo plano y solo reemplaza el video si el resultado es más liviano."
+
+msgid "Compress"
+msgstr "Comprimir"
 
 msgid "Remove the background video? The login page will use the background image."
 msgstr "¿Eliminar el video de fondo? El inicio de sesión usará la imagen de fondo."
@@ -144,8 +174,14 @@ msgstr "¿Eliminar el video de fondo? El inicio de sesión usará la imagen de f
 msgid "Remove video"
 msgstr "Quitar video"
 
+msgid "The video is larger than %s. Every visitor downloads it when opening the login page: use \"Compress\" to reduce it."
+msgstr "El video pesa más de %s. Cada visitante lo descarga al abrir el inicio de sesión: usa \"Comprimir\" para reducirlo."
+
 msgid "The video is larger than %s. Every visitor downloads it when opening the login page; compress it (for example 1080p, 20-30 seconds, H.264) for a faster login."
 msgstr "El video pesa más de %s. Cada visitante lo descarga al abrir el inicio de sesión; comprímelo (por ejemplo 1080p, 20-30 segundos, H.264) para que cargue más rápido."
+
+msgid "To compress it from here, install ffmpeg on the server:"
+msgstr "Para comprimirlo desde aquí, instala ffmpeg en el servidor:"
 
 msgid "No video uploaded: the login page uses the background image."
 msgstr "No hay video cargado: el inicio de sesión usa la imagen de fondo."

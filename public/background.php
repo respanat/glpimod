@@ -45,6 +45,7 @@ if ($type === 'config') {
         json_encode([
             'opacity' => (float) BrandManager::getLoginOpacity(),
             'video'   => BrandManager::hasBackgroundVideo(),
+            'version' => BrandManager::getResourceInfo('background_video')['version'],
         ]),
         200,
         ['Content-Type' => 'application/json']

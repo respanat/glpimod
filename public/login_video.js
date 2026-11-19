@@ -33,13 +33,16 @@
         }
     }
 
+    let version = 0;
+
     function injectVideo(container) {
         if (container.querySelector('video.glpimod-background')) {
             return;
         }
         const video = document.createElement('video');
         video.className = 'glpimod-background';
-        video.src = base + '?type=video';
+        // version = file date: a new or compressed video is not served from the browser cache
+        video.src = base + '?type=video' + (version ? '&v=' + version : '');
         video.autoplay = true;
         video.loop = true;
         video.muted = true;
@@ -58,6 +61,7 @@
         .then(function (r) { return r.ok ? r.json() : {}; })
         .then(function (config) {
             applyOpacity(config.opacity);
+            version = config.version || 0;
             if (config.video) {
                 whenContainerReady(injectVideo);
             }

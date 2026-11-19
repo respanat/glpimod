@@ -30,6 +30,15 @@ msgstr ""
 msgid "could not be saved"
 msgstr ""
 
+msgid "Compressing the background video in the background. You can keep working; the login page keeps the current video until it finishes."
+msgstr ""
+
+msgid "The video compression could not be started."
+msgstr ""
+
+msgid "The video is being compressed: wait for it to finish before uploading another one."
+msgstr ""
+
 msgid "Background video uploaded"
 msgstr ""
 
@@ -135,7 +144,28 @@ msgstr ""
 msgid "optional"
 msgstr ""
 
+msgid "Video compressed: %1$s → %2$s. The login page already uses the new version."
+msgstr ""
+
+msgid "The video was already optimized: compressing it would not make it smaller, so the original was kept."
+msgstr ""
+
+msgid "The video could not be compressed. The original video was kept."
+msgstr ""
+
+msgid "Compressing the video in the background…"
+msgstr ""
+
+msgid "You can leave this page; the login page keeps the current video until it finishes."
+msgstr ""
+
 msgid "Video uploaded"
+msgstr ""
+
+msgid "Compress the background video? It runs in the background and replaces the video only if the result is smaller."
+msgstr ""
+
+msgid "Compress"
 msgstr ""
 
 msgid "Remove the background video? The login page will use the background image."
@@ -144,7 +174,13 @@ msgstr ""
 msgid "Remove video"
 msgstr ""
 
+msgid "The video is larger than %s. Every visitor downloads it when opening the login page: use \"Compress\" to reduce it."
+msgstr ""
+
 msgid "The video is larger than %s. Every visitor downloads it when opening the login page; compress it (for example 1080p, 20-30 seconds, H.264) for a faster login."
+msgstr ""
+
+msgid "To compress it from here, install ffmpeg on the server:"
 msgstr ""
 
 msgid "No video uploaded: the login page uses the background image."
