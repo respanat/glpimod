@@ -6,9 +6,11 @@
 (function () {
     'use strict';
 
-    // URLs relative to this script, so they work whatever the GLPI root URL is
+    // URLs relative to this script, so they work whatever the GLPI root URL is.
+    // Always /plugins/glpimod/background.php (same URL as the CSS background), without /public/,
+    // so a single exclusion is enough in SSO plugins such as samlsso.
     const script = document.currentScript;
-    const base = script && script.src ? script.src.replace(/login_video\.js(\?.*)?$/, 'background.php') : null;
+    const base = script && script.src ? script.src.replace(/(public\/)?login_video\.js(\?.*)?$/, 'background.php') : null;
     if (!base) {
         return;
     }
@@ -51,7 +53,8 @@
         });
     }
 
-    fetch(base + '?type=config', {credentials: 'same-origin'})
+    // Sent as AJAX so SSO plugins (samlsso) do not take it as the post-login redirect target
+    fetch(base + '?type=config', {credentials: 'same-origin', headers: {'X-Requested-With': 'XMLHttpRequest'}})
         .then(function (r) { return r.ok ? r.json() : {}; })
         .then(function (config) {
             applyOpacity(config.opacity);

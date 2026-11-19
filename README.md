@@ -69,6 +69,21 @@ Agregado en glpimod:
 
 Los archivos cargados se guardan en `files/_plugins/glpimod/` (fuera de la carpeta del plugin).
 
+## Uso con SAML SSO (plugin samlsso)
+
+El plugin **samlsso** guarda como destino post-login la última URL que el navegador pidió antes de iniciar sesión.
+El video de fondo se sigue descargando mientras el login está abierto, así que después de autenticarse
+el usuario puede terminar en `.../background.php?type=video` en lugar del inicio de GLPI.
+
+Solución: en la configuración de samlsso, agregar una **exclusión** con la ruta:
+
+```
+/plugins/glpimod/background.php
+```
+
+y la acción *excluir / no aplicar SAML*. Esa URL solo entrega el fondo del login (es pública de todas formas),
+por lo que excluirla no expone nada.
+
 ## Licencia
 
 GPLv3 — ver [LICENSE.txt](LICENSE.txt) y [COPYRIGHT](COPYRIGHT).
