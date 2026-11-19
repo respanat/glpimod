@@ -43,98 +43,157 @@ class UIBranding
 {
 
     /**
+     * Saves the configuration page.
+     *
      * @param array $data
      * @param array $files
      * @return void
      */
-public function save(array $data, array $files): void
-{
-    $brandManager = new BrandManager();
-    $backgroundChanged = false;
-    $backgroundVideoChanged = false;  // ← NUEVO
-    $logosChanged = false;
-    $faviconChanged = false;
+    public function save(array $data, array $files): void
+    {
+        $brandManager = new BrandManager();
 
-    // ← EXISTENTE: background JPG
-    if (isset($files['background']['name']) && $files['background']['name'] !== '') {
-        $backgroundChanged = $brandManager->uploadResource("background", $files['background']);
-    }
-    
-    // ← NUEVO: background_video MP4
-    if (isset($files['background_video']['name']) && $files['background_video']['name'] !== '') {
-        $backgroundVideoChanged = $brandManager->uploadResource("background_video", $files['background_video']);
-        if ($backgroundVideoChanged) {
-            Session::addMessageAfterRedirect("✅ Video de fondo cargado correctamente");
+        // --- Deletions requested through the "remove" buttons
+        if (!empty($data['delete_resource'])) {
+            $this->delete($brandManager, (string) $data['delete_resource']);
+            return;
         }
-    }
-    
-    // ← RESTO IGUAL (logos/favicon)...
-    if (isset($files['logo_s']['name']) && $files['logo_s']['name'] !== '') {
-        $logosChanged = $brandManager->uploadResource("logo_s", $files['logo_s']);
-    }
-    if (isset($files['logo_m']['name']) && $files['logo_m']['name'] !== '') {
-        $logosChanged = $brandManager->uploadResource("logo_m", $files['logo_m']);
-    }
-    if (isset($files['logo_l']['name']) && $files['logo_l']['name'] !== '') {
-        $logosChanged = $brandManager->uploadResource("logo_l", $files['logo_l']);
-    }
-    if (isset($files['favicon']['name']) && $files['favicon']['name'] !== '') {
-        $faviconChanged = $brandManager->uploadResource("favicon", $files['favicon']);
-    }
 
-    // ← MODIFICADO: lógica show_background
-    if (isset($data['show_background'])) {
-        if ($data['show_background'] === '1') {
-            if ($backgroundChanged || !$brandManager::isLoginPageModified()) {
-                $brandManager->applyResource("background");
+        $backgroundChanged = false;
+        $logosChanged = false;
+        $faviconChanged = false;
+
+        // --- Uploads
+        if ($this->hasUpload($files, 'background')) {
+            $backgroundChanged = $brandManager->uploadResource("background", $files['background']);
+        }
+        if ($this->hasUpload($files, 'background_video')
+            && $brandManager->uploadResource("background_video", $files['background_video'])) {
+            Session::addMessageAfterRedirect(__('Background video uploaded', 'glpimod'));
+        }
+        foreach (BrandManager::LOGO_RESOURCES as $logo) {
+            if ($this->hasUpload($files, $logo)) {
+                $logosChanged = $brandManager->uploadResource($logo, $files[$logo]) || $logosChanged;
             }
-            $brandManager->applyLoginPageModifier();
-        } else if ($brandManager::isLoginPageModified()) {
-            $brandManager->disableLoginPageModifier();
-            // NO restaurar background/background_video (no tienen backup)
-        }
-    }
-
-    // ← RESTO DEL MÉTODO IGUAL...
-    if (isset($data['show_custom_logos'])) {
-        if ($data['show_custom_logos'] === '1') {
-            if ($logosChanged || !$brandManager::isActiveResourceModified("logo_s") || !$brandManager::isActiveResourceModified("logo_m") || !$brandManager::isActiveResourceModified("logo_l")) {
-                $brandManager->applyResource("logo_s");
-                $brandManager->applyResource("logo_m");
-                $brandManager->applyResource("logo_l");
+            foreach (BrandManager::LOGO_VARIANTS as $variant) {
+                $field = $logo . '__' . $variant;
+                if ($this->hasUpload($files, $field)) {
+                    $logosChanged = $brandManager->uploadLogoVariant($logo, $variant, $files[$field]) || $logosChanged;
+                }
             }
-        } else if ($brandManager::isActiveResourceModified("logo_s") || $brandManager::isActiveResourceModified("logo_m") || $brandManager::isActiveResourceModified("logo_l")) {
-            $brandManager->restoreResource("logo_s");
-            $brandManager->restoreResource("logo_m");
-            $brandManager->restoreResource("logo_l");
         }
-    } else if ($logosChanged) {
-        $brandManager->applyResource("logo_s");
-        $brandManager->applyResource("logo_m");
-        $brandManager->applyResource("logo_l");
-    }
+        if ($this->hasUpload($files, 'favicon')) {
+            $faviconChanged = $brandManager->uploadResource("favicon", $files['favicon']);
+        }
 
-    if (isset($data['show_custom_favicon'])) {
-        if ($data['show_custom_favicon'] === '1') {
+        // --- Login page background
+        if (isset($data['show_background'])) {
+            if ($data['show_background'] === '1') {
+                if ($backgroundChanged || !$brandManager::isLoginPageModified()) {
+                    $brandManager->applyResource("background");
+                }
+                $brandManager->applyLoginPageModifier();
+            } else if ($brandManager::isLoginPageModified()) {
+                // background image/video have no backup: they are only disabled
+                $brandManager->disableLoginPageModifier();
+            }
+        }
+
+        // --- Logos
+        $showLogos = isset($data['show_custom_logos'])
+            ? $data['show_custom_logos'] === '1'
+            : self::areCustomLogosActive();
+        if ($showLogos) {
+            if ($logosChanged || !self::areCustomLogosActive()) {
+                $this->applyLogos($brandManager);
+            }
+        } else if (self::areCustomLogosActive()) {
+            foreach (BrandManager::LOGO_RESOURCES as $logo) {
+                $brandManager->restoreResource($logo);
+            }
+        }
+
+        // --- Favicon
+        $showFavicon = isset($data['show_custom_favicon'])
+            ? $data['show_custom_favicon'] === '1'
+            : BrandManager::isActiveResourceModified("favicon");
+        if ($showFavicon) {
             if ($faviconChanged || !$brandManager::isActiveResourceModified("favicon")) {
                 $brandManager->applyResource("favicon");
             }
         } else if ($brandManager::isActiveResourceModified("favicon")) {
             $brandManager->restoreResource("favicon");
         }
-    } else if ($faviconChanged && $brandManager::isActiveResourceModified("favicon")) {
-        $brandManager->applyResource("favicon");
+
+        // --- Title and login box
+        if (isset($data['title'])) {
+            $brandManager->changeTitle($data["title"]);
+        }
+        if (isset($data['login_opacity'])) {
+            $brandManager->setLoginOpacity((float) $data['login_opacity']);
+        }
+
+        Session::addMessageAfterRedirect(__('Configuration saved', 'glpimod'));
     }
 
-    if (isset($data['title'])) {
-        $brandManager->changeTitle($data["title"]);
-    }
-	if (isset($data['login_opacity'])) {
-    $brandManager->setLoginOpacity(floatval($data['login_opacity']));
-    Session::addMessageAfterRedirect("✅ Opacidad de login actualizada");
-	}
+    /**
+     * Handles a "remove" button: background_video, or <logo>__<variant> for a colour-specific logo.
+     */
+    private function delete(BrandManager $brandManager, string $target): void
+    {
+        if ($target === 'background_video') {
+            if ($brandManager->deleteBackgroundVideo()) {
+                Session::addMessageAfterRedirect(__('Background video removed: the login page now uses the background image', 'glpimod'));
+            }
+            return;
+        }
 
-}
+        [$logo, $variant] = array_pad(explode('__', $target, 2), 2, '');
+        if ($brandManager->deleteLogoVariant($logo, $variant)) {
+            // re-apply so that this variant goes back to the main logo
+            if (self::areCustomLogosActive()) {
+                $brandManager->applyResource($logo);
+            }
+            Session::addMessageAfterRedirect(__('Colour-specific logo removed: the main logo is used instead', 'glpimod'));
+        }
+    }
+
+    private function applyLogos(BrandManager $brandManager): void
+    {
+        foreach (BrandManager::LOGO_RESOURCES as $logo) {
+            $brandManager->applyResource($logo);
+        }
+    }
+
+    private function hasUpload(array $files, string $field): bool
+    {
+        return isset($files[$field]['name']) && $files[$field]['name'] !== '';
+    }
+
+    private static function areCustomLogosActive(): bool
+    {
+        foreach (BrandManager::LOGO_RESOURCES as $logo) {
+            if (BrandManager::isActiveResourceModified($logo)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Converts a php.ini size ("64M") to bytes.
+     */
+    private static function iniBytes(string $value): int
+    {
+        $value = trim($value);
+        $number = (int) $value;
+        return match (strtolower(substr($value, -1))) {
+            'g' => $number * 1024 ** 3,
+            'm' => $number * 1024 ** 2,
+            'k' => $number * 1024,
+            default => $number,
+        };
+    }
 
     /**
      * @return bool
@@ -142,17 +201,52 @@ public function save(array $data, array $files): void
     public function display(): bool
     {
         global $CFG_GLPI;
+
+        $logos = [];
+        $sizes = [
+            'logo_s' => ['label' => __('Small logo', 'glpimod'), 'hint' => '53×53 px', 'where' => __('Collapsed side menu', 'glpimod')],
+            'logo_m' => ['label' => __('Medium logo', 'glpimod'), 'hint' => '100×55 px', 'where' => __('Side menu and header', 'glpimod')],
+            'logo_l' => ['label' => __('Large logo', 'glpimod'), 'hint' => '250×138 px', 'where' => __('Login page', 'glpimod')],
+        ];
+        $variants = [
+            'black' => ['label' => __('For light backgrounds', 'glpimod'), 'bg' => 'light'],
+            'white' => ['label' => __('For dark backgrounds', 'glpimod'), 'bg' => 'dark'],
+            'grey' => ['label' => __('User menu', 'glpimod'), 'bg' => 'light'],
+        ];
+        foreach ($sizes as $logo => $meta) {
+            $logoVariants = [];
+            foreach ($variants as $variant => $vmeta) {
+                $logoVariants[$variant] = $vmeta + [
+                    'custom' => BrandManager::hasLogoVariant($logo, $variant),
+                    'info' => BrandManager::getResourceInfo($logo, BrandManager::hasLogoVariant($logo, $variant) ? $variant : null),
+                ];
+            }
+            $logos[$logo] = $meta + [
+                'info' => BrandManager::getResourceInfo($logo),
+                'variants' => $logoVariants,
+                'has_variants' => count(array_filter($logoVariants, static fn($v) => $v['custom'])) > 0,
+            ];
+        }
+
+        $video = BrandManager::getResourceInfo('background_video');
+        $maxUpload = min(self::iniBytes((string) ini_get('upload_max_filesize')), self::iniBytes((string) ini_get('post_max_size')));
+
         TemplateRenderer::getInstance()->display('@glpimod/uibranding.html.twig', [
             "url" => $CFG_GLPI['root_doc'] . "/plugins/glpimod/front/uibranding.php",
+            "preview_url" => $CFG_GLPI['root_doc'] . "/plugins/glpimod/front/resource.send.php",
             "show_background" => BrandManager::isLoginPageModified(),
-            "show_custom_logos" => BrandManager::isActiveResourceModified("logo_s")
-                || BrandManager::isActiveResourceModified("logo_m")
-                || BrandManager::isActiveResourceModified("logo_l"),
+            "show_custom_logos" => self::areCustomLogosActive(),
             "show_custom_favicon" => BrandManager::isActiveResourceModified("favicon"),
             "title" => BrandManager::getCurrentTitle(),
-            "plugin_url" => $CFG_GLPI['root_doc'] . "/plugins/glpimod",
-            "has_video" => BrandManager::hasBackgroundVideo(),
-        	"login_opacity" => BrandManager::getLoginOpacity(),
+            "login_opacity" => BrandManager::getLoginOpacity(),
+            "background" => BrandManager::getResourceInfo('background'),
+            "video" => $video,
+            "video_warning" => $video['size'] > BrandManager::VIDEO_WARNING_SIZE,
+            "max_upload" => \Toolbox::getSize($maxUpload),
+            "video_warning_label" => \Toolbox::getSize(BrandManager::VIDEO_WARNING_SIZE),
+            "logos" => $logos,
+            "favicon" => BrandManager::getResourceInfo('favicon'),
+            "version" => PLUGIN_GLPIMOD_VERSION,
         ]);
         return true;
     }

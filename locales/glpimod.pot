@@ -1,90 +1,205 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 23:53+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
+"Project-Id-Version: glpimod\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: templates/uibranding.html.twig
-msgid "UI Branding"
+msgid "GLPI Mod - Branding"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Apply Modifications"
+msgid "Please activate the plugin"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Page Title"
+msgid "the file exceeds the maximum upload size of the server"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Show login background"
+msgid "invalid file"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Show custom logos"
+msgid "Upload of %1$s failed: %2$s"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Show custom favicon"
+msgid "%1$s was rejected: only %2$s files are accepted"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Custom Images"
+msgid "%1$s was rejected: its content (%2$s) does not match the .%3$s extension"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Background (min. 1920x1080 - JPG)"
+msgid "could not be saved"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Background"
+msgid "Background video uploaded"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Small Logo (53x53 - PNG)"
+msgid "Configuration saved"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Small Logo"
+msgid "Background video removed: the login page now uses the background image"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Medium Logo (100x55 - PNG)"
+msgid "Colour-specific logo removed: the main logo is used instead"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Medium Logo"
+msgid "Small logo"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Large Logo (250x138 - PNG)"
+msgid "Collapsed side menu"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Large Logo"
+msgid "Medium logo"
 msgstr ""
 
-#: templates/uibranding.html.twig
-msgid "Favicon (16x16 - ICO)"
+msgid "Side menu and header"
 msgstr ""
 
-#: templates/uibranding.html.twig
+msgid "Large logo"
+msgstr ""
+
+msgid "Login page"
+msgstr ""
+
+msgid "For light backgrounds"
+msgstr ""
+
+msgid "For dark backgrounds"
+msgstr ""
+
+msgid "User menu"
+msgstr ""
+
+msgid "Branding"
+msgstr ""
+
+msgid "Login background"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "Video"
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+msgid "Logos"
+msgstr ""
+
+msgid "Custom"
+msgstr ""
+
 msgid "Favicon"
 msgstr ""
 
-#: front/uibranding.php:51
-msgid "Please activate the plugin"
+msgid "Title and favicon"
+msgstr ""
+
+msgid "Page title"
+msgstr ""
+
+msgid "Shown in the browser tab and as the application name."
+msgstr ""
+
+msgid "Use custom favicon"
+msgstr ""
+
+msgid "If disabled, the original GLPI favicon is restored."
+msgstr ""
+
+msgid "ICO file, 16×16 or 32×32 px."
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "Customize the login page"
+msgstr ""
+
+msgid "Background image or video, and login box transparency."
+msgstr ""
+
+msgid "Login box opacity"
+msgstr ""
+
+msgid "Transparent"
+msgstr ""
+
+msgid "Solid"
+msgstr ""
+
+msgid "Background video"
+msgstr ""
+
+msgid "optional"
+msgstr ""
+
+msgid "Video uploaded"
+msgstr ""
+
+msgid "Remove the background video? The login page will use the background image."
+msgstr ""
+
+msgid "Remove video"
+msgstr ""
+
+msgid "The video is larger than %s. Every visitor downloads it when opening the login page; compress it (for example 1080p, 20-30 seconds, H.264) for a faster login."
+msgstr ""
+
+msgid "No video uploaded: the login page uses the background image."
+msgstr ""
+
+msgid "MP4 (H.264), 1920×1080 recommended, ideally under 10 MB."
+msgstr ""
+
+msgid "Server upload limit: %s."
+msgstr ""
+
+msgid "Background image"
+msgstr ""
+
+msgid "Used when there is no video, and while the video loads."
+msgstr ""
+
+msgid "JPG, 1920×1080 recommended."
+msgstr ""
+
+msgid "Approximate preview. Changes are applied when you save."
+msgstr ""
+
+msgid "Use custom logos"
+msgstr ""
+
+msgid "If disabled, the original GLPI logos are restored. Uploaded files are kept."
+msgstr ""
+
+msgid "Main logo on light background"
+msgstr ""
+
+msgid "Main logo on dark background"
+msgstr ""
+
+msgid "Logos by colour (optional)"
+msgstr ""
+
+msgid "in use"
+msgstr ""
+
+msgid "GLPI uses a different version of the logo depending on the background. Upload one only if the main logo does not look good there."
+msgstr ""
+
+msgid "Own file"
+msgstr ""
+
+msgid "Uses main logo"
+msgstr ""
+
+msgid "Remove this colour-specific logo and use the main logo instead?"
+msgstr ""
+
+msgid "Use main logo"
+msgstr ""
+
+msgid "Logos and favicon may need a hard refresh (Ctrl+F5) to show up."
 msgstr ""

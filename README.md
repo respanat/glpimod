@@ -19,8 +19,11 @@ Del plugin original:
 - Imagen de fondo en la página de login.
 
 Agregado en glpimod:
-- **Video de fondo en el login** (MP4, opcional). Si no hay video cargado se usa la imagen JPG.
-- **Opacidad de la caja de login** configurable, con vista previa en la configuración.
+- **Video de fondo en el login** (MP4, opcional), con botón para quitarlo y aviso cuando pesa demasiado. Si no hay video se usa la imagen JPG.
+- **Opacidad de la caja de login** configurable.
+- **Logos por color**: GLPI usa una versión del logo para fondos claros, otra para fondos oscuros y otra para el menú de usuario; se puede subir una distinta para cada caso (opcional).
+- **Página de configuración rediseñada**: pestañas, estado actual de cada elemento y vista previa del login, del título y del favicon antes de guardar.
+- Traducción al español (es_CO, es_ES, es_MX, es_419).
 - Validación del contenido real de los archivos cargados (no solo la extensión).
 - Funciona instalado en `plugins` o en `marketplace`.
 - Identificador propio (`glpimod`) para que pueda convivir con el plugin original.
@@ -60,12 +63,23 @@ Agregado en glpimod:
 
 ## Uso
 
-- **Título de la página**: texto de la pestaña del navegador.
-- **Mostrar fondo en el login**: activa la imagen o el video de fondo.
-- **Opacidad de la caja de login**: de 0.05 (transparente) a 1 (sólida).
-- **Video de fondo (.mp4)**: recomendado 1920×1080 y menos de 10 MB.
-- **Imagen de fondo (.jpg)**: se usa cuando no hay video.
-- **Logos (.png) y favicon (.ico)**.
+La configuración está en **Configuración → Plugins → GLPI Mod** (botón de configuración) y tiene tres pestañas:
+
+- **Título y favicon**: texto de la pestaña del navegador y favicon (.ico), con vista previa.
+- **Inicio de sesión**: activar la personalización, opacidad de la caja (0.05 transparente – 1 sólida), video de fondo (.mp4, recomendado 1920×1080 y menos de 10 MB) e imagen de fondo (.jpg). Vista previa en vivo.
+- **Logos**: logo pequeño, mediano y grande (.png), vistos sobre fondo claro y oscuro; y, opcionalmente, un archivo distinto por color.
+
+> [!TIP]
+> Al actualizar el plugin con `git pull`, si cambia la versión, GLPI lo marca como "pendiente de actualizar" y deja de aplicarlo
+> hasta que en **Configuración → Plugins** se pulse **Actualizar** y luego **Activar**. La configuración y las imágenes se conservan.
+
+### Traducciones
+
+Los textos están en inglés y se traducen desde `locales/`. Para regenerar los archivos después de cambiar textos:
+
+```shell
+python3 tools/i18n.py locales
+```
 
 Los archivos cargados se guardan en `files/_plugins/glpimod/` (fuera de la carpeta del plugin).
 

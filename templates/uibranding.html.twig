@@ -28,194 +28,314 @@
 # -------------------------------------------------------------------------
 #}
 
-{% import 'components/form/fields_macros.html.twig' as fields %}
 
-<div class="d-flex flex-column">
-    <div class="row">
-        <div class="col">
-            <div class='p-2 flex-grow-1 card'>
-                <div class="asset">
-                    <form id="main-form" name="uibranding_form" method="post" action="{{ url }}"
-                          enctype="multipart/form-data"
-                          data-submit-once>
-                        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"/>
-                        {{ fields.largeTitle(__('UI Branding', 'glpimod'), 'ti ti-paint', true) }}
-                        <div class="card-body d-flex flex-wrap">
-                            <div class="col-12 col-xxl-12 flex-column">
-                                <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
-                                    <div class="row flex-row align-items-start flex-grow-1">
-                                        <div class="row flex-row">
-                                            {{ fields.smallTitle(__('Apply Modifications', 'glpimod'), 'ti ti-adjustments') }}
-                                            {{ fields.textField('title', title, __('Page Title', 'glpimod')) }}
-                                            {{ fields.dropdownYesNo('show_background', show_background, __('Show login background', 'glpimod')) }}
-                                            {{ fields.smallTitle(__('Login Box', 'glpimod'), 'ti ti-tune-vertical') }}
-<div class="row">
-    <div class="col-md-6">
-        <div class="form-field row align-items-center mb-2">
-            <label class="col-form-label col-md-5 text-md-end">{{ __('Box opacity', 'glpimod') }}</label>
-            <div class="col-md-7 field-container">
-                <input type="range" class="form-range" name="login_opacity" id="login_opacity"
-                       min="0.05" max="1" step="0.05" value="{{ login_opacity|default('0.65') }}"/>
-                <output for="login_opacity" id="opacity_value" class="ms-2 fw-bold">{{ login_opacity|default('0.65') }}</output>
-                <small class="form-text text-muted d-block">{{ __('0.05 = transparente, 1 = sólido', 'glpimod') }}</small>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="login-preview position-relative p-4 rounded-3 border" 
-             style="background-color: rgba(255,255,255,{{ login_opacity|default('0.65') }}); border: 1px solid rgba(255,255,255,0.4); min-height: 140px;">
-            <div class="text-center position-absolute top-50 start-50 translate-middle">
-                <i class="ti ti-login ti-4x text-primary mb-2"></i>
-                <h6 class="text-primary">{{ __('Live Preview', 'glpimod') }}</h6>
-                <small class="text-muted">opacity: <span id="live_opacity">{{ login_opacity|default('0.65') }}</span></small>
-            </div>
-        </div>
-    </div>
-</div>
-                                            {{ fields.dropdownYesNo('show_custom_logos', show_custom_logos, __('Show custom logos', 'glpimod')) }}
-                                            {{ fields.dropdownYesNo('show_custom_favicon', show_custom_favicon, __('Show custom favicon', 'glpimod')) }}
-                                            {{ fields.smallTitle(__('Custom Images', 'glpimod'), 'ti ti-photo') }}
-                                            {# Video MP4 (prioridad 1) #}
-<div class="form-field row align-items-center col-12 col-sm-6 mb-2">
-    <label class="col-form-label col-xxl-5 text-xxl-end" for="background_video_input">
-        {{ __('Login Background Video (.mp4)', 'glpimod') }}
+{# ---------- Small building blocks ---------- #}
+
+{% macro switch(name, checked, label, help) %}
+    <input type="hidden" name="{{ name }}" value="0"/>
+    <label class="form-check form-switch mb-1">
+        <input class="form-check-input" type="checkbox" name="{{ name }}" value="1" {{ checked ? 'checked' : '' }}/>
+        <span class="form-check-label fw-bold">{{ label }}</span>
     </label>
-    <div class="col-xxl-7 field-container">
-        <input type="file" class="form-control" name="background_video" accept="video/mp4" id="background_video_input"/>
-        <small class="form-text text-muted">1920x1080, &lt;10MB recomendado</small>
-    </div>
-</div>
-<div class="row align-items-center justify-content-center col-12 col-sm-6 mb-2">
-    {% if has_video %}
-    <video width="200" height="112" controls muted loop style="border-radius: 8px;">
-        <source src="{{ plugin_url }}/front/resource.send.php?resource=background_video" type="video/mp4">
-    </video>
+    {% if help %}<div class="form-hint mb-0">{{ help }}</div>{% endif %}
+{% endmacro %}
+
+{% macro upload(name, accept, hint, preview_target) %}
+    <input type="file" class="form-control form-control-sm glpimod-upload" name="{{ name }}" id="glpimod_{{ name }}"
+           accept="{{ accept }}" {% if preview_target %}data-preview="{{ preview_target }}"{% endif %}/>
+    {% if hint %}<div class="form-hint mt-1">{{ hint }}</div>{% endif %}
+{% endmacro %}
+
+{% macro status(active, on_label, off_label) %}
+    {% if active %}
+        <span class="badge bg-green-lt"><i class="ti ti-check me-1"></i>{{ on_label }}</span>
     {% else %}
-    <span class="text-muted">{{ __('No background video uploaded (the JPG image is used)', 'glpimod') }}</span>
+        <span class="badge bg-secondary-lt">{{ off_label }}</span>
     {% endif %}
-</div>
+{% endmacro %}
 
-{# Imagen JPG (fallback) #}
-<div class="form-field row align-items-center col-12 col-sm-6 mb-2">
-    <label class="col-form-label col-xxl-5 text-xxl-end" for="background_input">
-        {{ __('Background Image (fallback JPG)', 'glpimod') }}
-    </label>
-    <div class="col-xxl-7 field-container">
-        <input type="file" class="form-control" name="background" accept="image/jpeg" id="background_input"/>
-    </div>
-</div>
-<div class="row align-items-center justify-content-center col-12 col-sm-6 mb-2">
-    <img style='max-width: 100%; max-height: 250px; width: auto; border-radius: 8px;'
-         src='{{ plugin_url }}/front/resource.send.php?resource=background'
-         alt='{{ __('Background', 'glpimod') }}'/>
-</div>
-                                            <div class="row border-top mb-2 ms-2 me-2"></div>
-                                            <div class="form-field row align-items-center col-12 col-sm-6  mb-2">
-                                                <label class="col-form-label col-xxl-5 text-xxl-end "
-                                                       for="logo_s_input">
-                                                    {{ __('Small Logo (53x53 - PNG)', 'glpimod') }}
-                                                </label>
-                                                <div class="col-xxl-7  field-container">
-                                                    <input type="file" class="form-control" name="logo_s"
-                                                           accept="image/png" id="logo_s_input"/>
-                                                </div>
-                                            </div>
-                                            <div class="row align-items-center justify-content-center col-12 col-sm-6 mb-2">
-                                                <img style='max-width: 100%; max-height: 250px; width: auto'
-                                                     src='{{ plugin_url }}/front/resource.send.php?resource=logo_s'
-                                                     alt='{{ __('Small Logo', 'glpimod') }}'/>
-                                            </div>
-                                            <div class="row border-top mb-2 ms-2 me-2"></div>
-                                            <div class="form-field row align-items-center col-12 col-sm-6  mb-2">
-                                                <label class="col-form-label col-xxl-5 text-xxl-end "
-                                                       for="logo_m_input">
-                                                    {{ __('Medium Logo (100x55 - PNG)', 'glpimod') }}
-                                                </label>
-                                                <div class="col-xxl-7  field-container">
-                                                    <input type="file" class="form-control" name="logo_m"
-                                                           accept="image/png" id="logo_m_input"/>
-                                                </div>
-                                            </div>
-                                            <div class="row align-items-center justify-content-center col-12 col-sm-6 mb-2">
-                                                <img style='max-width: 100%; max-height: 250px; width: auto'
-                                                     src='{{ plugin_url }}/front/resource.send.php?resource=logo_m'
-                                                     alt='{{ __('Medium Logo', 'glpimod') }}'/>
-                                            </div>
-                                            <div class="row border-top mb-2 ms-2 me-2"></div>
-                                            <div class="form-field row align-items-center col-12 col-sm-6  mb-2">
-                                                <label class="col-form-label col-xxl-5 text-xxl-end "
-                                                       for="logo_l_input">
-                                                    {{ __('Large Logo (250x138 - PNG)', 'glpimod') }}
-                                                </label>
-                                                <div class="col-xxl-7  field-container">
-                                                    <input type="file" class="form-control" name="logo_l"
-                                                           accept="image/png" id="logo_l_input"/>
-                                                </div>
-                                            </div>
-                                            <div class="row align-items-center justify-content-center col-12 col-sm-6 mb-2">
-                                                <img style='max-width: 100%; max-height: 250px; width: auto'
-                                                     src='{{ plugin_url }}/front/resource.send.php?resource=logo_l'
-                                                     alt='{{ __('Large Logo', 'glpimod') }}'/>
-                                            </div>
-                                            <div class="row border-top mb-2 ms-2 me-2"></div>
-                                            <div class="form-field row align-items-center col-12 col-sm-6  mb-2">
-                                                <label class="col-form-label col-xxl-5 text-xxl-end "
-                                                       for="favicon_input">
-                                                    {{ __('Favicon (16x16 - ICO)', 'glpimod') }}
-                                                </label>
-                                                <div class="col-xxl-7  field-container">
-                                                    <input type="file" class="form-control" name="favicon"
-                                                           accept=".ico,image/x-icon" id="favicon_input"/>
-                                                </div>
-                                            </div>
-                                            <div class="row align-items-center justify-content-center col-12 col-sm-6 mb-2">
-                                                <img style='max-width: 100%; max-height: 250px; width: auto'
-                                                     src='{{ plugin_url }}/front/resource.send.php?resource=favicon'
-                                                     alt='{{ __('Favicon', 'glpimod') }}'/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+{% import _self as ui %}
+
+{% set bg_url = preview_url ~ '?resource=background&v=' ~ background.version %}
+{% set video_url = preview_url ~ '?resource=background_video&v=' ~ video.version %}
+{% set logo_l_url = preview_url ~ '?resource=logo_l&variant=black&v=' ~ logos.logo_l.info.version %}
+
+<style>
+    .glpimod-tile { display:flex; align-items:center; justify-content:center; height:96px; border-radius:8px;
+                    border:1px solid rgba(0,0,0,.08); padding:8px; }
+    .glpimod-tile img { max-width:100%; max-height:100%; object-fit:contain; }
+    .glpimod-tile.light { background:#ffffff; }
+    .glpimod-tile.dark { background:#1f2937; }
+    .glpimod-preview { position:relative; overflow:hidden; border-radius:10px; aspect-ratio:16/9;
+                       background:#d9dee5 center/cover no-repeat; border:1px solid rgba(0,0,0,.1); }
+    .glpimod-preview video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .glpimod-preview .glpimod-box { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+                       width:42%; min-width:180px; padding:14px; border-radius:12px; text-align:center;
+                       border:1px solid rgba(255,255,255,.5); box-shadow:0 10px 30px rgba(0,0,0,.25); }
+    .glpimod-box img { max-width:70%; max-height:46px; margin-bottom:8px; }
+    .glpimod-fake-input { height:10px; border-radius:4px; background:rgba(0,0,0,.12); margin:6px 0; }
+    .glpimod-fake-btn { height:14px; border-radius:4px; background:var(--tblr-primary, #206bc4); opacity:.7; margin-top:10px; }
+    .glpimod-browser-tab { display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:10px 10px 0 0;
+                       background:#fff; border:1px solid rgba(0,0,0,.1); border-bottom:none; max-width:100%; }
+    .glpimod-browser-tab img { width:16px; height:16px; }
+    .glpimod-browser-bar { height:10px; background:#fff; border:1px solid rgba(0,0,0,.1); border-top:none; border-radius:0 0 8px 8px; }
+    .glpimod-section-title { font-size:.75rem; text-transform:uppercase; letter-spacing:.04em; color:var(--tblr-muted, #667382); font-weight:600; }
+</style>
+
+<form id="glpimod-form" name="uibranding_form" method="post" action="{{ url }}" enctype="multipart/form-data" data-submit-once>
+    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"/>
+
+    <div class="card">
+        {# ---------- Header with current status ---------- #}
+        <div class="card-header d-flex flex-wrap align-items-center gap-2">
+            <h3 class="card-title me-auto mb-0">
+                <i class="ti ti-paint me-2"></i>{{ __('Branding', 'glpimod') }}
+                <span class="badge bg-blue-lt ms-2">glpimod {{ version }}</span>
+            </h3>
+            <span class="text-muted small me-1">{{ __('Login background', 'glpimod') }}:</span>
+            {% if not show_background %}
+                <span class="badge bg-secondary-lt">{{ __('Disabled', 'glpimod') }}</span>
+            {% elseif video.exists %}
+                <span class="badge bg-green-lt"><i class="ti ti-movie me-1"></i>{{ __('Video', 'glpimod') }}</span>
+            {% else %}
+                <span class="badge bg-green-lt"><i class="ti ti-photo me-1"></i>{{ __('Image', 'glpimod') }}</span>
+            {% endif %}
+            <span class="text-muted small ms-2 me-1">{{ __('Logos', 'glpimod') }}:</span>
+            {{ ui.status(show_custom_logos, __('Custom', 'glpimod'), 'GLPI') }}
+            <span class="text-muted small ms-2 me-1">{{ __('Favicon', 'glpimod') }}:</span>
+            {{ ui.status(show_custom_favicon, __('Custom', 'glpimod'), 'GLPI') }}
+        </div>
+
+        <div class="card-header pt-0 border-bottom-0">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a href="#glpimod-tab-general" class="nav-link active" data-bs-toggle="tab" role="tab">
+                        <i class="ti ti-browser me-2"></i>{{ __('Title and favicon', 'glpimod') }}
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a href="#glpimod-tab-login" class="nav-link" data-bs-toggle="tab" role="tab">
+                        <i class="ti ti-login me-2"></i>{{ __('Login page', 'glpimod') }}
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a href="#glpimod-tab-logos" class="nav-link" data-bs-toggle="tab" role="tab">
+                        <i class="ti ti-badge me-2"></i>{{ __('Logos', 'glpimod') }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body tab-content">
+
+            {# ================= TAB: title and favicon ================= #}
+            <div class="tab-pane active show" id="glpimod-tab-general" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="glpimod-section-title mb-2">{{ __('Page title', 'glpimod') }}</div>
+                        <input type="text" class="form-control" name="title" id="glpimod_title" value="{{ title }}" maxlength="100"/>
+                        <div class="form-hint">{{ __('Shown in the browser tab and as the application name.', 'glpimod') }}</div>
+
+                        <div class="glpimod-section-title mt-4 mb-2">{{ __('Favicon', 'glpimod') }}</div>
+                        {{ ui.switch('show_custom_favicon', show_custom_favicon, __('Use custom favicon', 'glpimod'), __('If disabled, the original GLPI favicon is restored.', 'glpimod')) }}
+                        <div class="mt-3">
+                            {{ ui.upload('favicon', '.ico,image/x-icon,image/vnd.microsoft.icon', __('ICO file, 16×16 or 32×32 px.', 'glpimod'), 'glpimod_favicon_preview') }}
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="glpimod-section-title mb-2">{{ __('Preview', 'glpimod') }}</div>
+                        <div class="p-3 rounded-3" style="background:#e9edf2;">
+                            <div class="glpimod-browser-tab">
+                                <img id="glpimod_favicon_preview" src="{{ preview_url }}?resource=favicon&v={{ favicon.version }}" alt=""/>
+                                <span id="glpimod_title_preview" class="text-truncate">{{ title }}</span>
                             </div>
+                            <div class="glpimod-browser-bar"></div>
                         </div>
-                        <div class="form-button-separator card-body mx-n2 border-top d-flex flex-row-reverse align-items-start flex-wrap">
-                            <button class="btn btn-primary me-2" type="submit" name="update" value="1">
-                                <i class="ti ti-device-floppy"></i>
-                                <span>{{ _x('button', 'Save') }}</span>
-                            </button>
-                        </div>
-                        <div class="card-footer mx-n2 mb-n2"></div>
-                    </form>
+                    </div>
                 </div>
             </div>
+
+            {# ================= TAB: login page ================= #}
+            <div class="tab-pane" id="glpimod-tab-login" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-xl-6">
+                        {{ ui.switch('show_background', show_background, __('Customize the login page', 'glpimod'), __('Background image or video, and login box transparency.', 'glpimod')) }}
+
+                        <div class="glpimod-section-title mt-4 mb-2">{{ __('Login box opacity', 'glpimod') }}</div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="small text-muted">{{ __('Transparent', 'glpimod') }}</span>
+                            <input type="range" class="form-range flex-grow-1" name="login_opacity" id="glpimod_opacity"
+                                   min="0.05" max="1" step="0.05" value="{{ login_opacity|default('0.65') }}"/>
+                            <span class="small text-muted">{{ __('Solid', 'glpimod') }}</span>
+                            <span class="badge bg-blue-lt" id="glpimod_opacity_value" style="min-width:3.2rem;">{{ login_opacity|default('0.65') }}</span>
+                        </div>
+
+                        <div class="glpimod-section-title mt-4 mb-2">{{ __('Background video', 'glpimod') }} <span class="text-lowercase fw-normal">({{ __('optional', 'glpimod') }})</span></div>
+                        {% if video.exists %}
+                            <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                                <span class="badge bg-green-lt"><i class="ti ti-movie me-1"></i>{{ __('Video uploaded', 'glpimod') }} · {{ video.size_label }}</span>
+                                <button type="submit" name="delete_resource" value="background_video" class="btn btn-sm btn-ghost-danger"
+                                        onclick="return confirm('{{ __('Remove the background video? The login page will use the background image.', 'glpimod')|e('js') }}');">
+                                    <i class="ti ti-trash me-1"></i>{{ __('Remove video', 'glpimod') }}
+                                </button>
+                            </div>
+                            {% if video_warning %}
+                                <div class="alert alert-warning py-2 mb-2">
+                                    <i class="ti ti-alert-triangle me-1"></i>
+                                    {{ __('The video is larger than %s. Every visitor downloads it when opening the login page; compress it (for example 1080p, 20-30 seconds, H.264) for a faster login.', 'glpimod')|format(video_warning_label) }}
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="form-hint mb-2">{{ __('No video uploaded: the login page uses the background image.', 'glpimod') }}</div>
+                        {% endif %}
+                        {{ ui.upload('background_video', 'video/mp4', __('MP4 (H.264), 1920×1080 recommended, ideally under 10 MB.', 'glpimod') ~ ' ' ~ __('Server upload limit: %s.', 'glpimod')|format(max_upload), 'glpimod_preview_video') }}
+
+                        <div class="glpimod-section-title mt-4 mb-2">{{ __('Background image', 'glpimod') }}</div>
+                        <div class="form-hint mb-2">{{ __('Used when there is no video, and while the video loads.', 'glpimod') }}</div>
+                        {{ ui.upload('background', 'image/jpeg', __('JPG, 1920×1080 recommended.', 'glpimod'), 'glpimod_preview_bg') }}
+                    </div>
+
+                    <div class="col-xl-6">
+                        <div class="glpimod-section-title mb-2">{{ __('Preview', 'glpimod') }}</div>
+                        <div class="glpimod-preview" id="glpimod_preview_bg" style="background-image:url('{{ bg_url }}');">
+                            <video id="glpimod_preview_video" muted loop autoplay playsinline
+                                   {% if video.exists %}src="{{ video_url }}"{% else %}hidden{% endif %}></video>
+                            <div class="glpimod-box" id="glpimod_preview_box" style="background-color:rgba(255,255,255,{{ login_opacity|default('0.65') }});">
+                                <img src="{{ logo_l_url }}" alt=""/>
+                                <div class="glpimod-fake-input"></div>
+                                <div class="glpimod-fake-input"></div>
+                                <div class="glpimod-fake-btn"></div>
+                            </div>
+                        </div>
+                        <div class="form-hint mt-2">{{ __('Approximate preview. Changes are applied when you save.', 'glpimod') }}</div>
+                    </div>
+                </div>
+            </div>
+
+            {# ================= TAB: logos ================= #}
+            <div class="tab-pane" id="glpimod-tab-logos" role="tabpanel">
+                {{ ui.switch('show_custom_logos', show_custom_logos, __('Use custom logos', 'glpimod'), __('If disabled, the original GLPI logos are restored. Uploaded files are kept.', 'glpimod')) }}
+
+                {% for key, logo in logos %}
+                    <div class="border rounded-3 p-3 mt-3">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-lg-4">
+                                <div class="fw-bold">{{ logo.label }} <span class="text-muted fw-normal small">· PNG {{ logo.hint }}</span></div>
+                                <div class="text-muted small mb-2">{{ logo.where }}</div>
+                                {{ ui.upload(key, 'image/png', '', 'glpimod_' ~ key ~ '_main') }}
+                            </div>
+                            <div class="col-6 col-lg-4">
+                                <div class="glpimod-tile light"><img id="glpimod_{{ key }}_main" src="{{ preview_url }}?resource={{ key }}&v={{ logo.info.version }}" alt=""/></div>
+                                <div class="text-center small text-muted mt-1">{{ __('Main logo on light background', 'glpimod') }}</div>
+                            </div>
+                            <div class="col-6 col-lg-4">
+                                <div class="glpimod-tile dark"><img src="{{ preview_url }}?resource={{ key }}&v={{ logo.info.version }}" alt=""/></div>
+                                <div class="text-center small text-muted mt-1">{{ __('Main logo on dark background', 'glpimod') }}</div>
+                            </div>
+                        </div>
+
+                        <details class="mt-3" {{ logo.has_variants ? 'open' : '' }}>
+                            <summary class="small fw-bold text-primary" style="cursor:pointer;">
+                                <i class="ti ti-palette me-1"></i>{{ __('Logos by colour (optional)', 'glpimod') }}
+                                {% if logo.has_variants %}<span class="badge bg-blue-lt ms-1">{{ __('in use', 'glpimod') }}</span>{% endif %}
+                            </summary>
+                            <div class="form-hint mb-2">{{ __('GLPI uses a different version of the logo depending on the background. Upload one only if the main logo does not look good there.', 'glpimod') }}</div>
+                            <div class="row g-3">
+                                {% for variant, v in logo.variants %}
+                                    <div class="col-md-4">
+                                        <div class="glpimod-tile {{ v.bg }}">
+                                            <img id="glpimod_{{ key }}__{{ variant }}_img" src="{{ preview_url }}?resource={{ key }}&variant={{ variant }}&v={{ v.info.version }}" alt=""/>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between mt-1 mb-1">
+                                            <span class="small fw-bold">{{ v.label }}</span>
+                                            {% if v.custom %}
+                                                <span class="badge bg-blue-lt">{{ __('Own file', 'glpimod') }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary-lt">{{ __('Uses main logo', 'glpimod') }}</span>
+                                            {% endif %}
+                                        </div>
+                                        {{ ui.upload(key ~ '__' ~ variant, 'image/png', '', 'glpimod_' ~ key ~ '__' ~ variant ~ '_img') }}
+                                        {% if v.custom %}
+                                            <button type="submit" name="delete_resource" value="{{ key }}__{{ variant }}" class="btn btn-sm btn-ghost-danger mt-1"
+                                                    onclick="return confirm('{{ __('Remove this colour-specific logo and use the main logo instead?', 'glpimod')|e('js') }}');">
+                                                <i class="ti ti-arrow-back-up me-1"></i>{{ __('Use main logo', 'glpimod') }}
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </details>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card-footer d-flex align-items-center gap-2 position-sticky bottom-0 bg-body" style="z-index:5;">
+            <span class="text-muted small me-auto">
+                <i class="ti ti-info-circle me-1"></i>{{ __('Logos and favicon may need a hard refresh (Ctrl+F5) to show up.', 'glpimod') }}
+            </span>
+            <button class="btn btn-primary" type="submit" name="update" value="1">
+                <i class="ti ti-device-floppy me-1"></i>{{ _x('button', 'Save') }}
+            </button>
         </div>
     </div>
-</div>
+</form>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const slider = document.getElementById('login_opacity');
-    const value = document.getElementById('opacity_value');
-    const preview = document.querySelector('.login-preview');
-    const liveOpacity = document.getElementById('live_opacity');
-    
-    if (!slider) {
-        console.error('❌ Slider login_opacity no encontrado');
-        return;
-    }
-    
-    slider.addEventListener('input', function() {
-        const opacity = parseFloat(this.value);
-        value.textContent = opacity.toFixed(2);
-        if (liveOpacity) liveOpacity.textContent = opacity.toFixed(2);
-        if (preview) {
-            preview.style.backgroundColor = `rgba(255,255,255,${opacity})`;
-            preview.style.borderColor = `rgba(255,255,255,${opacity * 0.6})`;
-        }
-        console.log('🎚️ Opacity:', opacity);
+(function () {
+    'use strict';
+    const form = document.getElementById('glpimod-form');
+    if (!form) return;
+
+    // Keep the selected tab after saving (page reloads)
+    const tabKey = 'glpimod_active_tab';
+    form.querySelectorAll('a[data-bs-toggle="tab"]').forEach(function (link) {
+        link.addEventListener('shown.bs.tab', function () {
+            try { sessionStorage.setItem(tabKey, link.getAttribute('href')); } catch (e) {}
+        });
     });
-    
-    console.log('✅ Slider inicializado');
-});
+    try {
+        const saved = sessionStorage.getItem(tabKey);
+        const link = saved ? form.querySelector('a[href="' + saved + '"]') : null;
+        if (link && window.bootstrap && bootstrap.Tab) { bootstrap.Tab.getOrCreateInstance(link).show(); }
+    } catch (e) {}
+
+    // Live opacity
+    const slider = document.getElementById('glpimod_opacity');
+    const value = document.getElementById('glpimod_opacity_value');
+    const box = document.getElementById('glpimod_preview_box');
+    if (slider) {
+        slider.addEventListener('input', function () {
+            const opacity = parseFloat(this.value);
+            value.textContent = opacity.toFixed(2);
+            box.style.backgroundColor = 'rgba(255,255,255,' + opacity + ')';
+        });
+    }
+
+    // Live title
+    const title = document.getElementById('glpimod_title');
+    const titlePreview = document.getElementById('glpimod_title_preview');
+    if (title) {
+        title.addEventListener('input', function () { titlePreview.textContent = this.value; });
+    }
+
+    // Preview selected files before saving
+    form.querySelectorAll('input.glpimod-upload[data-preview]').forEach(function (input) {
+        input.addEventListener('change', function () {
+            const file = this.files && this.files[0];
+            const target = document.getElementById(this.dataset.preview);
+            if (!file || !target) return;
+            const url = URL.createObjectURL(file);
+            if (target.tagName === 'VIDEO') {
+                target.hidden = false;
+                target.src = url;
+                target.play().catch(function () {});
+            } else if (target.tagName === 'IMG') {
+                target.src = url;
+            } else {
+                target.style.backgroundImage = 'url(' + url + ')';
+            }
+        });
+    });
+})();
 </script>
-
-

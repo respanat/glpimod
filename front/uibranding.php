@@ -39,11 +39,11 @@ if (Plugin::isPluginActive("glpimod")) {
 
     Session::checkRight("config", UPDATE);
 
-    if (isset($_POST["update"])) {
+    if (isset($_POST["update"]) || isset($_POST["delete_resource"])) {
         $uiBranding->save($_POST, $_FILES);
         Html::back();
     } else {
-        Html::header("UI Branding", '', "config", "plugin", "glpimod");
+        Html::header(__('GLPI Mod - Branding', 'glpimod'), '', "config", "plugin", "glpimod");
         $uiBranding->display();
         Html::footer();
     }

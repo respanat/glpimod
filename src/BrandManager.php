@@ -46,6 +46,17 @@ class BrandManager
     public const FILES_DIR = GLPI_PLUGIN_DOC_DIR . "/glpimod";
     public const BACKUP_DIR = self::FILES_DIR . "/backups";
     public const IMAGES_DIR = self::FILES_DIR . "/images";
+    public const VARIANTS_DIR = self::IMAGES_DIR . "/variants";
+
+    /**
+     * GLPI ships every logo in three colour variants; the index matches the "active"/"backup" arrays.
+     * black = for light backgrounds, white = for dark backgrounds (e.g. dark sidebar palettes), grey = neutral.
+     */
+    public const LOGO_VARIANTS = ['black', 'grey', 'white'];
+    public const LOGO_RESOURCES = ['logo_s', 'logo_m', 'logo_l'];
+
+    /** A background video above this size triggers a warning in the configuration page */
+    public const VIDEO_WARNING_SIZE = 10 * 1024 * 1024;
 
     /**
      * Allowed MIME types per file extension (checked against the real file content on upload)
@@ -356,8 +367,13 @@ class BrandManager
     {
         if (!isset(self::IMAGE_RESOURCES[$resourceName]["active"])) return;
         if (is_array(self::IMAGE_RESOURCES[$resourceName]["active"])) {
-            foreach (self::IMAGE_RESOURCES[$resourceName]["active"] as $activeFile) {
-                copy(self::IMAGE_RESOURCES[$resourceName]["current"], $activeFile);
+            foreach (self::IMAGE_RESOURCES[$resourceName]["active"] as $index => $activeFile) {
+                // a colour-specific logo overrides the main logo for that variant
+                $variant = self::LOGO_VARIANTS[$index] ?? null;
+                $source = ($variant !== null && self::hasLogoVariant($resourceName, $variant))
+                    ? self::getLogoVariantPath($resourceName, $variant)
+                    : self::IMAGE_RESOURCES[$resourceName]["current"];
+                copy($source, $activeFile);
             }
         } else {
             copy(self::IMAGE_RESOURCES[$resourceName]["current"], self::IMAGE_RESOURCES[$resourceName]["active"]);
@@ -378,27 +394,121 @@ class BrandManager
     public function uploadResource(string $resourceName, array $file): bool
     {
         if (!isset(self::IMAGE_RESOURCES[$resourceName])) return false;
-        if (!isset($file["tmp_name"])) return false;
+        return $this->storeUpload($file, self::IMAGE_RESOURCES[$resourceName]["accept"], self::IMAGE_RESOURCES[$resourceName]["current"]);
+    }
+
+    /**
+     * Validates an uploaded file (upload error, extension and real MIME type) and moves it to its destination.
+     *
+     * @param array $file Uploaded file data from $_FILES.
+     * @param string[] $accept Accepted extensions.
+     * @param string $destination Destination path.
+     * @return bool
+     */
+    private function storeUpload(array $file, array $accept, string $destination): bool
+    {
+        if (!isset($file["tmp_name"]) || $file["tmp_name"] === '') return false;
         if (isset($file["error"]) && $file["error"] !== UPLOAD_ERR_OK) {
-            Session::addMessageAfterRedirect(sprintf("❌ Upload of file %s failed (file invalid)", $file["name"]));
+            $reason = in_array($file["error"], [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE], true)
+                ? __('the file exceeds the maximum upload size of the server', 'glpimod')
+                : __('invalid file', 'glpimod');
+            Session::addMessageAfterRedirect(sprintf(__('Upload of %1$s failed: %2$s', 'glpimod'), $file["name"], $reason), false, ERROR);
             return false;
         }
 
         $extension = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
-        if (!in_array($extension, self::IMAGE_RESOURCES[$resourceName]["accept"], true)) {
-            Session::addMessageAfterRedirect(sprintf("❌ Uploaded file %s is invalid (only %s accepted)", $file["name"], implode(", ", self::IMAGE_RESOURCES[$resourceName]["accept"])));
+        if (!in_array($extension, $accept, true)) {
+            Session::addMessageAfterRedirect(sprintf(__('%1$s was rejected: only %2$s files are accepted', 'glpimod'), $file["name"], implode(", ", $accept)), false, ERROR);
             return false;
         }
         $mime = mime_content_type($file["tmp_name"]);
         if (isset(self::MIME_MAP[$extension]) && !in_array($mime, self::MIME_MAP[$extension], true)) {
-            Session::addMessageAfterRedirect(sprintf("❌ Uploaded file %s is invalid (content is %s, not %s)", $file["name"], $mime ?: "unknown", $extension));
+            Session::addMessageAfterRedirect(sprintf(__('%1$s was rejected: its content (%2$s) does not match the .%3$s extension', 'glpimod'), $file["name"], $mime ?: "?", $extension), false, ERROR);
             return false;
         }
-        if (!move_uploaded_file($file["tmp_name"], self::IMAGE_RESOURCES[$resourceName]["current"])) {
-            Session::addMessageAfterRedirect(sprintf("❌ Upload of file %s failed", $file["name"]));
+        $dir = dirname($destination);
+        if (!is_dir($dir) && !mkdir($dir, 0755, true) && !is_dir($dir)) {
+            Session::addMessageAfterRedirect(sprintf(__('Upload of %1$s failed: %2$s', 'glpimod'), $file["name"], $dir), false, ERROR);
+            return false;
+        }
+        if (!move_uploaded_file($file["tmp_name"], $destination)) {
+            Session::addMessageAfterRedirect(sprintf(__('Upload of %1$s failed: %2$s', 'glpimod'), $file["name"], __('could not be saved', 'glpimod')), false, ERROR);
             return false;
         }
         return true;
+    }
+
+    /**
+     * Path of the colour-specific file of a logo (whether it exists or not).
+     */
+    public static function getLogoVariantPath(string $resourceName, string $variant): string
+    {
+        $index = array_search($variant, self::LOGO_VARIANTS, true);
+        $active = self::IMAGE_RESOURCES[$resourceName]["active"][$index];
+        return self::VARIANTS_DIR . "/" . basename($active);
+    }
+
+    /**
+     * Checks whether a colour-specific file has been uploaded for a logo.
+     */
+    public static function hasLogoVariant(string $resourceName, string $variant): bool
+    {
+        if (!in_array($resourceName, self::LOGO_RESOURCES, true) || !in_array($variant, self::LOGO_VARIANTS, true)) {
+            return false;
+        }
+        return file_exists(self::getLogoVariantPath($resourceName, $variant));
+    }
+
+    /**
+     * Uploads a colour-specific file for a logo.
+     */
+    public function uploadLogoVariant(string $resourceName, string $variant, array $file): bool
+    {
+        if (!in_array($resourceName, self::LOGO_RESOURCES, true) || !in_array($variant, self::LOGO_VARIANTS, true)) {
+            return false;
+        }
+        return $this->storeUpload($file, self::IMAGE_RESOURCES[$resourceName]["accept"], self::getLogoVariantPath($resourceName, $variant));
+    }
+
+    /**
+     * Removes a colour-specific file: that variant goes back to using the main logo.
+     */
+    public function deleteLogoVariant(string $resourceName, string $variant): bool
+    {
+        if (!self::hasLogoVariant($resourceName, $variant)) {
+            return false;
+        }
+        return unlink(self::getLogoVariantPath($resourceName, $variant));
+    }
+
+    /**
+     * Removes the uploaded background video: the login page falls back to the background image.
+     */
+    public function deleteBackgroundVideo(): bool
+    {
+        if (!self::hasBackgroundVideo()) {
+            return false;
+        }
+        return unlink(self::IMAGE_RESOURCES["background_video"]["current"]);
+    }
+
+    /**
+     * Basic information about the current file of a resource, for the configuration page.
+     *
+     * @return array{exists: bool, size: int, version: int, size_label: string}
+     */
+    public static function getResourceInfo(string $resourceName, ?string $variant = null): array
+    {
+        $file = $variant !== null
+            ? self::getLogoVariantPath($resourceName, $variant)
+            : (self::IMAGE_RESOURCES[$resourceName]["current"] ?? '');
+        $exists = $file !== '' && file_exists($file);
+        return [
+            'exists' => $exists,
+            'size' => $exists ? (int) filesize($file) : 0,
+            'version' => $exists ? (int) filemtime($file) : 0,
+            'size_label' => $exists ? Toolbox::getSize((int) filesize($file)) : '',
+        ];
     }
 
     /**

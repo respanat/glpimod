@@ -1,154 +1,205 @@
-# Spanish (Spain) translations for PACKAGE package.
-# Copyright (C) 2025 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# Automatically generated, 2025.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: es_ES v1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-16 10:01+0100\n"
-"PO-Revision-Date: 2026-03-16 10:09+0100\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: es_ES\n"
-"MIME-Version: 1.0\n"
+"Project-Id-Version: glpimod\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: M365 Copilot\n"
 
-#: templates/uibranding.html.twig
-msgid "UI Branding"
-msgstr "UI Branding"
+msgid "GLPI Mod - Branding"
+msgstr "GLPI Mod - Imagen de marca"
 
-#: templates/uibranding.html.twig
-msgid "Apply Modifications"
-msgstr "Aplicar modificaciones"
+msgid "Please activate the plugin"
+msgstr "Por favor active el plugin"
 
-#: templates/uibranding.html.twig
-msgid "Page Title"
-msgstr "Título de la página"
+msgid "the file exceeds the maximum upload size of the server"
+msgstr "el archivo supera el tamaño máximo de subida del servidor"
 
-#: templates/uibranding.html.twig
-msgid "Show login background"
-msgstr "Mostrar fondo de inicio de sesión"
+msgid "invalid file"
+msgstr "archivo no válido"
 
-#: templates/uibranding.html.twig
-msgid "Show custom logos"
-msgstr "Mostrar logotipos personalizados"
+msgid "Upload of %1$s failed: %2$s"
+msgstr "No se pudo subir %1$s: %2$s"
 
-#: templates/uibranding.html.twig
-msgid "Enable theme-based logo modifications"
-msgstr "Habilitar modificaciones de logotipos basadas en el tema"
+msgid "%1$s was rejected: only %2$s files are accepted"
+msgstr "%1$s fue rechazado: solo se aceptan archivos %2$s"
 
-#: templates/uibranding.html.twig
-msgid "Show custom favicon"
-msgstr "Mostrar favicon personalizado"
+msgid "%1$s was rejected: its content (%2$s) does not match the .%3$s extension"
+msgstr "%1$s fue rechazado: su contenido (%2$s) no corresponde a la extensión .%3$s"
 
-#: templates/uibranding.html.twig
-msgid "Custom Images"
-msgstr "Imágenes personalizadas"
+msgid "could not be saved"
+msgstr "no se pudo guardar"
 
-#: templates/uibranding.html.twig
-msgid "Background"
-msgstr "Fondo"
+msgid "Background video uploaded"
+msgstr "Video de fondo cargado"
 
-#: templates/uibranding.html.twig
-msgid "Small Logo"
-msgstr "Logotipo pequeño"
+msgid "Configuration saved"
+msgstr "Configuración guardada"
 
-#: templates/uibranding.html.twig
-msgid "Medium Logo"
-msgstr "Logotipo mediano"
+msgid "Background video removed: the login page now uses the background image"
+msgstr "Video de fondo eliminado: el inicio de sesión ahora usa la imagen de fondo"
 
-#: templates/uibranding.html.twig
-msgid "Large Logo"
-msgstr "Logotipo grande"
+msgid "Colour-specific logo removed: the main logo is used instead"
+msgstr "Logo por color eliminado: se usa el logo principal"
 
-#: templates/uibranding.html.twig
-msgid "Theme-based logos"
-msgstr "Logotipos basados en el tema"
+msgid "Small logo"
+msgstr "Logo pequeño"
 
-#: templates/uibranding.html.twig
-msgid "Small Logo (black)"
-msgstr "Logotipo pequeño (negro)"
+msgid "Collapsed side menu"
+msgstr "Menú lateral contraído"
 
-#: templates/uibranding.html.twig
-msgid "Small Logo (grey)"
-msgstr "Logotipo pequeño (gris)"
+msgid "Medium logo"
+msgstr "Logo mediano"
 
-#: templates/uibranding.html.twig
-msgid "Small Logo (white)"
-msgstr "Logotipo pequeño (blanco)"
+msgid "Side menu and header"
+msgstr "Menú lateral y encabezado"
 
-#: templates/uibranding.html.twig
-msgid "Medium Logo (black)"
-msgstr "Logotipo mediano (negro)"
+msgid "Large logo"
+msgstr "Logo grande"
 
-#: templates/uibranding.html.twig
-msgid "Medium Logo (grey)"
-msgstr "Logotipo mediano (gris)"
+msgid "Login page"
+msgstr "Inicio de sesión"
 
-#: templates/uibranding.html.twig
-msgid "Medium Logo (white)"
-msgstr "Logotipo mediano (blanco)"
+msgid "For light backgrounds"
+msgstr "Para fondos claros"
 
-#: templates/uibranding.html.twig
-msgid "Large Logo (black)"
-msgstr "Logotipo grande (negro)"
+msgid "For dark backgrounds"
+msgstr "Para fondos oscuros"
 
-#: templates/uibranding.html.twig
-msgid "Large Logo (grey)"
-msgstr "Logotipo grande (gris)"
+msgid "User menu"
+msgstr "Menú de usuario"
 
-#: templates/uibranding.html.twig
-msgid "Large Logo (white)"
-msgstr "Logotipo grande (blanco)"
+msgid "Branding"
+msgstr "Imagen de marca"
 
-#: templates/uibranding.html.twig
+msgid "Login background"
+msgstr "Fondo del login"
+
+msgid "Disabled"
+msgstr "Desactivado"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Image"
+msgstr "Imagen"
+
+msgid "Logos"
+msgstr "Logos"
+
+msgid "Custom"
+msgstr "Personalizado"
+
 msgid "Favicon"
 msgstr "Favicon"
 
-#: front/uibranding.php:49
-msgid "Please activate the plugin"
-msgstr "Por favor, activa el plugin"
+msgid "Title and favicon"
+msgstr "Título y favicon"
 
-#: src/BrandManager.php:254
-msgid "Created plugin directories"
-msgstr "Directorios del plugin creados"
+msgid "Page title"
+msgstr "Título de la página"
 
-#: src/BrandManager.php:286
-msgid "Installed image resources"
-msgstr "Recursos de imagen instalados"
+msgid "Shown in the browser tab and as the application name."
+msgstr "Se muestra en la pestaña del navegador y como nombre de la aplicación."
 
-#: src/BrandManager.php:287
-msgid "Created backups"
-msgstr "Copias de seguridad creadas"
+msgid "Use custom favicon"
+msgstr "Usar favicon personalizado"
 
-#: src/BrandManager.php:293
-msgid "Installed modifiers"
-msgstr "Modificadores instalados"
+msgid "If disabled, the original GLPI favicon is restored."
+msgstr "Si se desactiva, se restaura el favicon original de GLPI."
 
-#: src/BrandManager.php:306
-msgid "Restored backups"
-msgstr "Copias de seguridad restauradas"
+msgid "ICO file, 16×16 or 32×32 px."
+msgstr "Archivo ICO de 16×16 o 32×32 px."
 
-#: src/BrandManager.php:309
-msgid "Removed resources and backups"
-msgstr "Recursos y copias de seguridad eliminados"
+msgid "Preview"
+msgstr "Vista previa"
 
-#: src/BrandManager.php:455
-#, php-format
-msgid "Upload of file %s failed (file invalid)"
-msgstr "La carga del archivo %s ha fallado (archivo no válido)"
+msgid "Customize the login page"
+msgstr "Personalizar la página de inicio de sesión"
 
-#: src/BrandManager.php:461 src/BrandManager.php:468
-#, php-format
-msgid "Uploaded file %s is invalid (only %s accepted)"
-msgstr "El archivo cargado %s no es válido (solo se acepta %s)"
+msgid "Background image or video, and login box transparency."
+msgstr "Imagen o video de fondo, y transparencia de la caja de acceso."
 
-#: src/BrandManager.php:473
-#, php-format
-msgid "Upload of file %s failed"
-msgstr "La carga del archivo %s ha fallado"
+msgid "Login box opacity"
+msgstr "Opacidad de la caja de acceso"
+
+msgid "Transparent"
+msgstr "Transparente"
+
+msgid "Solid"
+msgstr "Sólida"
+
+msgid "Background video"
+msgstr "Video de fondo"
+
+msgid "optional"
+msgstr "opcional"
+
+msgid "Video uploaded"
+msgstr "Video cargado"
+
+msgid "Remove the background video? The login page will use the background image."
+msgstr "¿Eliminar el video de fondo? El inicio de sesión usará la imagen de fondo."
+
+msgid "Remove video"
+msgstr "Quitar video"
+
+msgid "The video is larger than %s. Every visitor downloads it when opening the login page; compress it (for example 1080p, 20-30 seconds, H.264) for a faster login."
+msgstr "El video pesa más de %s. Cada visitante lo descarga al abrir el inicio de sesión; comprímelo (por ejemplo 1080p, 20-30 segundos, H.264) para que cargue más rápido."
+
+msgid "No video uploaded: the login page uses the background image."
+msgstr "No hay video cargado: el inicio de sesión usa la imagen de fondo."
+
+msgid "MP4 (H.264), 1920×1080 recommended, ideally under 10 MB."
+msgstr "MP4 (H.264), se recomienda 1920×1080 y menos de 10 MB."
+
+msgid "Server upload limit: %s."
+msgstr "Límite de subida del servidor: %s."
+
+msgid "Background image"
+msgstr "Imagen de fondo"
+
+msgid "Used when there is no video, and while the video loads."
+msgstr "Se usa cuando no hay video y mientras el video carga."
+
+msgid "JPG, 1920×1080 recommended."
+msgstr "JPG, se recomienda 1920×1080."
+
+msgid "Approximate preview. Changes are applied when you save."
+msgstr "Vista previa aproximada. Los cambios se aplican al guardar."
+
+msgid "Use custom logos"
+msgstr "Usar logos personalizados"
+
+msgid "If disabled, the original GLPI logos are restored. Uploaded files are kept."
+msgstr "Si se desactiva, se restauran los logos originales de GLPI. Los archivos cargados se conservan."
+
+msgid "Main logo on light background"
+msgstr "Logo principal sobre fondo claro"
+
+msgid "Main logo on dark background"
+msgstr "Logo principal sobre fondo oscuro"
+
+msgid "Logos by colour (optional)"
+msgstr "Logos por color (opcional)"
+
+msgid "in use"
+msgstr "en uso"
+
+msgid "GLPI uses a different version of the logo depending on the background. Upload one only if the main logo does not look good there."
+msgstr "GLPI usa una versión distinta del logo según el fondo. Sube una solo si el logo principal no se ve bien en ese fondo."
+
+msgid "Own file"
+msgstr "Archivo propio"
+
+msgid "Uses main logo"
+msgstr "Usa el logo principal"
+
+msgid "Remove this colour-specific logo and use the main logo instead?"
+msgstr "¿Quitar este logo por color y usar el logo principal?"
+
+msgid "Use main logo"
+msgstr "Usar logo principal"
+
+msgid "Logos and favicon may need a hard refresh (Ctrl+F5) to show up."
+msgstr "Puede que los logos y el favicon necesiten recargar con Ctrl+F5 para verse."

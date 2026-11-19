@@ -1,0 +1,205 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: glpimod\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es_CO\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "GLPI Mod - Branding"
+msgstr "GLPI Mod - Imagen de marca"
+
+msgid "Please activate the plugin"
+msgstr "Por favor active el plugin"
+
+msgid "the file exceeds the maximum upload size of the server"
+msgstr "el archivo supera el tamaño máximo de subida del servidor"
+
+msgid "invalid file"
+msgstr "archivo no válido"
+
+msgid "Upload of %1$s failed: %2$s"
+msgstr "No se pudo subir %1$s: %2$s"
+
+msgid "%1$s was rejected: only %2$s files are accepted"
+msgstr "%1$s fue rechazado: solo se aceptan archivos %2$s"
+
+msgid "%1$s was rejected: its content (%2$s) does not match the .%3$s extension"
+msgstr "%1$s fue rechazado: su contenido (%2$s) no corresponde a la extensión .%3$s"
+
+msgid "could not be saved"
+msgstr "no se pudo guardar"
+
+msgid "Background video uploaded"
+msgstr "Video de fondo cargado"
+
+msgid "Configuration saved"
+msgstr "Configuración guardada"
+
+msgid "Background video removed: the login page now uses the background image"
+msgstr "Video de fondo eliminado: el inicio de sesión ahora usa la imagen de fondo"
+
+msgid "Colour-specific logo removed: the main logo is used instead"
+msgstr "Logo por color eliminado: se usa el logo principal"
+
+msgid "Small logo"
+msgstr "Logo pequeño"
+
+msgid "Collapsed side menu"
+msgstr "Menú lateral contraído"
+
+msgid "Medium logo"
+msgstr "Logo mediano"
+
+msgid "Side menu and header"
+msgstr "Menú lateral y encabezado"
+
+msgid "Large logo"
+msgstr "Logo grande"
+
+msgid "Login page"
+msgstr "Inicio de sesión"
+
+msgid "For light backgrounds"
+msgstr "Para fondos claros"
+
+msgid "For dark backgrounds"
+msgstr "Para fondos oscuros"
+
+msgid "User menu"
+msgstr "Menú de usuario"
+
+msgid "Branding"
+msgstr "Imagen de marca"
+
+msgid "Login background"
+msgstr "Fondo del login"
+
+msgid "Disabled"
+msgstr "Desactivado"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Image"
+msgstr "Imagen"
+
+msgid "Logos"
+msgstr "Logos"
+
+msgid "Custom"
+msgstr "Personalizado"
+
+msgid "Favicon"
+msgstr "Favicon"
+
+msgid "Title and favicon"
+msgstr "Título y favicon"
+
+msgid "Page title"
+msgstr "Título de la página"
+
+msgid "Shown in the browser tab and as the application name."
+msgstr "Se muestra en la pestaña del navegador y como nombre de la aplicación."
+
+msgid "Use custom favicon"
+msgstr "Usar favicon personalizado"
+
+msgid "If disabled, the original GLPI favicon is restored."
+msgstr "Si se desactiva, se restaura el favicon original de GLPI."
+
+msgid "ICO file, 16×16 or 32×32 px."
+msgstr "Archivo ICO de 16×16 o 32×32 px."
+
+msgid "Preview"
+msgstr "Vista previa"
+
+msgid "Customize the login page"
+msgstr "Personalizar la página de inicio de sesión"
+
+msgid "Background image or video, and login box transparency."
+msgstr "Imagen o video de fondo, y transparencia de la caja de acceso."
+
+msgid "Login box opacity"
+msgstr "Opacidad de la caja de acceso"
+
+msgid "Transparent"
+msgstr "Transparente"
+
+msgid "Solid"
+msgstr "Sólida"
+
+msgid "Background video"
+msgstr "Video de fondo"
+
+msgid "optional"
+msgstr "opcional"
+
+msgid "Video uploaded"
+msgstr "Video cargado"
+
+msgid "Remove the background video? The login page will use the background image."
+msgstr "¿Eliminar el video de fondo? El inicio de sesión usará la imagen de fondo."
+
+msgid "Remove video"
+msgstr "Quitar video"
+
+msgid "The video is larger than %s. Every visitor downloads it when opening the login page; compress it (for example 1080p, 20-30 seconds, H.264) for a faster login."
+msgstr "El video pesa más de %s. Cada visitante lo descarga al abrir el inicio de sesión; comprímelo (por ejemplo 1080p, 20-30 segundos, H.264) para que cargue más rápido."
+
+msgid "No video uploaded: the login page uses the background image."
+msgstr "No hay video cargado: el inicio de sesión usa la imagen de fondo."
+
+msgid "MP4 (H.264), 1920×1080 recommended, ideally under 10 MB."
+msgstr "MP4 (H.264), se recomienda 1920×1080 y menos de 10 MB."
+
+msgid "Server upload limit: %s."
+msgstr "Límite de subida del servidor: %s."
+
+msgid "Background image"
+msgstr "Imagen de fondo"
+
+msgid "Used when there is no video, and while the video loads."
+msgstr "Se usa cuando no hay video y mientras el video carga."
+
+msgid "JPG, 1920×1080 recommended."
+msgstr "JPG, se recomienda 1920×1080."
+
+msgid "Approximate preview. Changes are applied when you save."
+msgstr "Vista previa aproximada. Los cambios se aplican al guardar."
+
+msgid "Use custom logos"
+msgstr "Usar logos personalizados"
+
+msgid "If disabled, the original GLPI logos are restored. Uploaded files are kept."
+msgstr "Si se desactiva, se restauran los logos originales de GLPI. Los archivos cargados se conservan."
+
+msgid "Main logo on light background"
+msgstr "Logo principal sobre fondo claro"
+
+msgid "Main logo on dark background"
+msgstr "Logo principal sobre fondo oscuro"
+
+msgid "Logos by colour (optional)"
+msgstr "Logos por color (opcional)"
+
+msgid "in use"
+msgstr "en uso"
+
+msgid "GLPI uses a different version of the logo depending on the background. Upload one only if the main logo does not look good there."
+msgstr "GLPI usa una versión distinta del logo según el fondo. Sube una solo si el logo principal no se ve bien en ese fondo."
+
+msgid "Own file"
+msgstr "Archivo propio"
+
+msgid "Uses main logo"
+msgstr "Usa el logo principal"
+
+msgid "Remove this colour-specific logo and use the main logo instead?"
+msgstr "¿Quitar este logo por color y usar el logo principal?"
+
+msgid "Use main logo"
+msgstr "Usar logo principal"
+
+msgid "Logos and favicon may need a hard refresh (Ctrl+F5) to show up."
+msgstr "Puede que los logos y el favicon necesiten recargar con Ctrl+F5 para verse."

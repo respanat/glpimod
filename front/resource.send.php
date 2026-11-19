@@ -31,8 +31,11 @@
  */
 
 use Glpi\Exception\Http\AccessDeniedHttpException;
+use Glpi\Exception\Http\NotFoundHttpException;
 use GlpiPlugin\Glpimod\BrandManager;
-use function Safe\readfile;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 if (!Plugin::isPluginActive("glpimod")) {
     throw new AccessDeniedHttpException();
@@ -41,29 +44,25 @@ if (!Plugin::isPluginActive("glpimod")) {
 Session::checkRight("config", UPDATE);
 
 $key = $_GET['resource'] ?? '';
-if ($key === "") {
-    throw new AccessDeniedHttpException();
-}
-
-// Soporte completo para todos los recursos (incluyendo background_video)
+$variant = $_GET['variant'] ?? '';
 if (!isset(BrandManager::IMAGE_RESOURCES[$key])) {
     throw new AccessDeniedHttpException();
 }
 
-$file = BrandManager::IMAGE_RESOURCES[$key]["current"];
+// Logo colour variant: its own file if uploaded, otherwise the main logo
+if ($variant !== '' && BrandManager::hasLogoVariant($key, $variant)) {
+    $file = BrandManager::getLogoVariantPath($key, $variant);
+} else {
+    $file = BrandManager::IMAGE_RESOURCES[$key]["current"];
+}
 if (!file_exists($file)) {
-    throw new AccessDeniedHttpException();
+    throw new NotFoundHttpException();
 }
 
-// MIME type automático (soporta video/mp4 + imágenes)
-$finfo = finfo_open(FILEINFO_MIME_TYPE);
-$mime = finfo_file($finfo, $file);
-finfo_close($finfo);
-
-header('Content-Type: ' . $mime);
-header('Cache-Control: no-store, no-cache, must-revalidate');
-header('Pragma: no-cache');
-header('Expires: Sun, 30 Jan 1966 06:30:00 GMT');
-header('Content-disposition: filename="' . basename($file) . '"');
-
-readfile($file);
+// BinaryFileResponse handles Range requests, so the video preview can be played and seeked
+$response = new BinaryFileResponse($file);
+$response->headers->set('Content-Type', mime_content_type($file) ?: 'application/octet-stream');
+$response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate');
+$response->setContentDisposition(ResponseHeaderBag::DISPOSITION_INLINE, basename($file));
+$response->prepare(Request::createFromGlobals());
+return $response;
