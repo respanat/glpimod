@@ -291,6 +291,15 @@ msgstr ""
 msgid "Christmas (always on)"
 msgstr ""
 
+msgid "Today: active, until 6 January"
+msgstr ""
+
+msgid "Today: inactive · it turns on by itself on 1 December"
+msgstr ""
+
+msgid "Active every day"
+msgstr ""
+
 msgid "Christmas effects:"
 msgstr ""
 

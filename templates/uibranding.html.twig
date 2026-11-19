@@ -369,6 +369,10 @@
                             <option value="auto" {{ helpdesk.season == 'auto' ? 'selected' : '' }}>{{ __('Automatic: Christmas from 1 December to 6 January', 'glpimod') }}</option>
                             <option value="christmas" {{ helpdesk.season == 'christmas' ? 'selected' : '' }}>{{ __('Christmas (always on)', 'glpimod') }}</option>
                         </select>
+                        <div class="mt-2 small" id="glpimod_season_status"
+                             data-active="{{ __('Today: active, until 6 January', 'glpimod') }}"
+                             data-inactive="{{ __('Today: inactive · it turns on by itself on 1 December', 'glpimod') }}"
+                             data-always="{{ __('Active every day', 'glpimod') }}"></div>
                         <div id="glpimod_xmas_effects" class="mt-3 ms-1">
                             <div class="form-hint mb-2">{{ __('Christmas effects:', 'glpimod') }}</div>
                             {% for key, label in {
@@ -484,6 +488,20 @@
         const season = value('season');
         document.getElementById('glpimod_xmas_effects').hidden = season === 'none';
         document.getElementById('glpimod_hd_auto_hint').hidden = season !== 'auto';
+        // real state of the season today (browser date, same rule as the portal)
+        const status = document.getElementById('glpimod_season_status');
+        const now = new Date();
+        const inSeason = now.getMonth() === 11 || (now.getMonth() === 0 && now.getDate() <= 6);
+        status.hidden = season === 'none';
+        if (season === 'christmas') {
+            status.innerHTML = '<span class="badge bg-green-lt"><i class="ti ti-circle-check me-1"></i></span> ';
+            status.lastChild.textContent = status.dataset.always;
+        } else if (season === 'auto') {
+            status.innerHTML = inSeason
+                ? '<span class="badge bg-green-lt"><i class="ti ti-circle-check"></i></span> '
+                : '<span class="badge bg-secondary-lt"><i class="ti ti-clock"></i></span> ';
+            status.lastChild.textContent = inSeason ? status.dataset.active : status.dataset.inactive;
+        }
         return {
             clock: !!form.querySelector('input[type=checkbox][name="helpdesk_clock"]:checked'),
             clock_format: value('clock_format') || '12',

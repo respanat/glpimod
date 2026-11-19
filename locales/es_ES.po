@@ -291,6 +291,15 @@ msgstr "Automático: Navidad del 1 de diciembre al 6 de enero"
 msgid "Christmas (always on)"
 msgstr "Navidad (siempre activo)"
 
+msgid "Today: active, until 6 January"
+msgstr "Hoy: activo, hasta el 6 de enero"
+
+msgid "Today: inactive · it turns on by itself on 1 December"
+msgstr "Hoy: inactivo · se activa solo el 1 de diciembre"
+
+msgid "Active every day"
+msgstr "Activo todos los días"
+
 msgid "Christmas effects:"
 msgstr "Efectos navideños:"
 

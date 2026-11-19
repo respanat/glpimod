@@ -117,6 +117,9 @@ es = {
 'The clock and the furniture decoration apply to the default illustrations of the portal. If an entity uses other illustrations, only the lights and the snowfall are shown.': 'El reloj y la decoración de los muebles aplican a las ilustraciones predeterminadas del portal. Si una entidad usa otras ilustraciones, solo se muestran las luces y la nieve.',
 'How can we help you?': '¿Cómo podemos ayudarte?',
 'Automatic mode: the preview shows the Christmas decoration even outside the season.': 'Modo automático: la vista previa muestra la decoración navideña aunque no sea temporada.',
+'Today: active, until 6 January': 'Hoy: activo, hasta el 6 de enero',
+'Today: inactive · it turns on by itself on 1 December': 'Hoy: inactivo · se activa solo el 1 de diciembre',
+'Active every day': 'Activo todos los días',
 }
 missing = [i for i in ids if i not in es]
 if missing:
