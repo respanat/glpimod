@@ -57,6 +57,72 @@ msgstr "Video de fondo eliminado: el inicio de sesión ahora usa la imagen de fo
 msgid "Colour-specific logo removed: the main logo is used instead"
 msgstr "Logo por color eliminado: se usa el logo principal"
 
+msgid "Hay Festival and Cartagena Music Festival"
+msgstr "Hay Festival y Festival de Música de Cartagena"
+
+msgid "7 – 31 January"
+msgstr "7 – 31 de enero"
+
+msgid "Fiestas de la Candelaria"
+msgstr "Fiestas de la Candelaria"
+
+msgid "30 January – 2 February"
+msgstr "30 de enero – 2 de febrero"
+
+msgid "Barranquilla Carnival"
+msgstr "Carnaval de Barranquilla"
+
+msgid "the 10 days before Ash Wednesday"
+msgstr "los 10 días antes del Miércoles de Ceniza"
+
+msgid "4 – 8 March"
+msgstr "4 – 8 de marzo"
+
+msgid "Holy Week (rest week)"
+msgstr "Semana Santa (semana de descanso)"
+
+msgid "Palm Sunday to Easter Sunday"
+msgstr "Domingo de Ramos a Domingo de Resurrección"
+
+msgid "week of the 2nd Sunday of May"
+msgstr "semana del 2.º domingo de mayo"
+
+msgid "week of the 3rd Sunday of June"
+msgstr "semana del 3.er domingo de junio"
+
+msgid "Independence of Colombia"
+msgstr "Independencia de Colombia"
+
+msgid "14 – 20 July"
+msgstr "14 – 20 de julio"
+
+msgid "Kite season (Battle of Boyacá)"
+msgstr "Temporada de cometas (Batalla de Boyacá)"
+
+msgid "August"
+msgstr "agosto"
+
+msgid "Love and Friendship"
+msgstr "Amor y Amistad"
+
+msgid "the two weeks up to the 3rd Saturday of September"
+msgstr "las dos semanas hasta el 3.er sábado de septiembre"
+
+msgid "24 – 31 October"
+msgstr "24 – 31 de octubre"
+
+msgid "Independence of Cartagena"
+msgstr "Independencia de Cartagena"
+
+msgid "1 – 15 November"
+msgstr "1 – 15 de noviembre"
+
+msgid "Christmas and Día de las Velitas"
+msgstr "Navidad y Día de las Velitas"
+
+msgid "1 December – 6 January (candles on 7 and 8 December)"
+msgstr "1 de diciembre – 6 de enero (velitas el 7 y 8 de diciembre)"
+
 msgid "Small logo"
 msgstr "Logo pequeño"
 
@@ -279,38 +345,41 @@ msgstr "12 horas (4:35)"
 msgid "24 hours (16:35)"
 msgstr "24 horas (16:35)"
 
-msgid "Seasonal mode"
-msgstr "Modo de temporada"
+msgid "Seasonal themes"
+msgstr "Temporadas"
 
 msgid "Off"
 msgstr "Desactivado"
 
-msgid "Automatic: Christmas from 1 December to 6 January"
-msgstr "Automático: Navidad del 1 de diciembre al 6 de enero"
+msgid "Automatic: follows the calendar of celebrations"
+msgstr "Automático: sigue el calendario de celebraciones"
 
-msgid "Christmas (always on)"
-msgstr "Navidad (siempre activo)"
+msgid "Fixed theme (every day)"
+msgstr "Tema fijo (todos los días)"
 
-msgid "Today: active, until 6 January"
-msgstr "Hoy: activo, hasta el 6 de enero"
+msgid "Today: %s"
+msgstr "Hoy: %s"
 
-msgid "Today: inactive · it turns on by itself on 1 December"
-msgstr "Hoy: inactivo · se activa solo el 1 de diciembre"
+msgid "Today: no celebration · next: %1$s, from %2$s"
+msgstr "Hoy: ninguna celebración · próxima: %1$s, desde el %2$s"
 
 msgid "Active every day"
 msgstr "Activo todos los días"
 
-msgid "Christmas effects:"
-msgstr "Efectos navideños:"
+msgid "Celebrations included in the automatic calendar:"
+msgstr "Celebraciones incluidas en el calendario automático:"
 
-msgid "Snow on the furniture, baubles on the plant and a gift"
-msgstr "Nieve sobre los muebles, bolitas en la planta y un regalo"
+msgid "Effects of the themes:"
+msgstr "Efectos de las temporadas:"
 
-msgid "String of lights along the top"
-msgstr "Guirnalda de luces en la parte superior"
+msgid "Decoration on the illustration"
+msgstr "Adornos sobre la ilustración"
 
-msgid "Gentle snowfall"
-msgstr "Nieve cayendo suavemente"
+msgid "Garland, pennants or lights along the top"
+msgstr "Guirnalda, banderines o luces en la parte superior"
+
+msgid "Animated effect (snow, confetti, petals, hearts...)"
+msgstr "Efecto animado (nieve, confeti, pétalos, corazones...)"
 
 msgid "Animations are disabled for users who ask their system to reduce motion."
 msgstr "Las animaciones se desactivan para quienes configuraron su sistema para reducir el movimiento."
@@ -321,8 +390,8 @@ msgstr "El reloj y la decoración de los muebles aplican a las ilustraciones pre
 msgid "How can we help you?"
 msgstr "¿Cómo podemos ayudarte?"
 
-msgid "Automatic mode: the preview shows the Christmas decoration even outside the season."
-msgstr "Modo automático: la vista previa muestra la decoración navideña aunque no sea temporada."
+msgid "Show in the preview:"
+msgstr "Ver en la vista previa:"
 
 msgid "Logos and favicon may need a hard refresh (Ctrl+F5) to show up."
 msgstr "Puede que los logos y el favicon necesiten recargar con Ctrl+F5 para verse."

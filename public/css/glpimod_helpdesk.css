@@ -39,6 +39,27 @@
     z-index: 1;
 }
 
+/* candle flames and sun rays */
+.glpimod-flame {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: glpimod-flicker 1.6s ease-in-out infinite;
+}
+.glpimod-spin {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation: glpimod-spin 40s linear infinite;
+}
+
+@keyframes glpimod-flicker {
+    0%, 100% { transform: scale(1, 1); opacity: 1; }
+    30% { transform: scale(.94, 1.06); opacity: .9; }
+    60% { transform: scale(1.04, .95); opacity: 1; }
+}
+@keyframes glpimod-spin {
+    to { transform: rotate(360deg); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-    .glpimod-bulb { animation: none; }
+    .glpimod-bulb, .glpimod-flame, .glpimod-spin { animation: none; }
 }

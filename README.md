@@ -24,7 +24,8 @@ Agregado en glpimod:
 - **Opacidad de la caja de login** configurable.
 - **Portal de autoservicio** ("¿Cómo podemos ayudarte?"):
   - el reloj de la ilustración muestra la **hora real** (12 o 24 horas) en lugar del "9:00" fijo, con el mismo estilo de píxeles y los colores del tema;
-  - **modo Navidad** (siempre o automático del 1 de diciembre al 6 de enero): nieve sobre los muebles, bolitas en la planta, un regalo, guirnalda de luces y nieve cayendo suavemente; cada efecto se puede desactivar y las animaciones respetan la preferencia de "reducir movimiento" del sistema.
+  - **temporadas** con un calendario de celebraciones de Colombia y el Caribe, en modo automático (se activan y desactivan solas según la fecha) o fijo: Hay Festival y Festival de Música (enero), Candelaria, Carnaval de Barranquilla, Día de la Mujer, Semana Santa como semana de descanso, Día de la Madre, Día del Padre y vacaciones, Independencia de Colombia, temporada de cometas (agosto), Amor y Amistad, Halloween y Día de los Niños, Independencia de Cartagena, Navidad y Día de las Velitas. Las fechas móviles (Carnaval, Semana Santa, Día de la Madre y del Padre, Amor y Amistad) se calculan cada año;
+  - cada tema tiene adornos sobre la ilustración, un elemento superior (luces, banderines, guirnalda) y un efecto animado suave (nieve, confeti, pétalos, corazones, cometas...); cada capa se puede desactivar y las animaciones respetan la preferencia de "reducir movimiento" del sistema.
 - **Logos por color**: GLPI usa una versión del logo para fondos claros, otra para fondos oscuros y otra para el menú de usuario; se puede subir una distinta para cada caso (opcional).
 - **Página de configuración rediseñada**: pestañas, estado actual de cada elemento y vista previa del login, del título y del favicon antes de guardar.
 - Traducción al español (es_CO, es_ES, es_MX, es_419).
@@ -88,7 +89,7 @@ La configuración está en **Configuración → Plugins → GLPI Mod** (botón d
 - **Título y favicon**: texto de la pestaña del navegador y favicon (.ico), con vista previa.
 - **Inicio de sesión**: activar la personalización, opacidad de la caja (0.05 transparente – 1 sólida), video de fondo (.mp4, recomendado 1920×1080 y menos de 10 MB) e imagen de fondo (.jpg). Vista previa en vivo.
 - **Logos**: logo pequeño, mediano y grande (.png), vistos sobre fondo claro y oscuro; y, opcionalmente, un archivo distinto por color.
-- **Portal de autoservicio**: reloj con la hora real y modo de temporada, con vista previa.
+- **Portal de autoservicio**: reloj con la hora real y temporadas (automático según el calendario o un tema fijo), con vista previa de cada tema.
 
 > [!TIP]
 > Al actualizar el plugin con `git pull`, si cambia la versión, GLPI lo marca como "pendiente de actualizar" y deja de aplicarlo

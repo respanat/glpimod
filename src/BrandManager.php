@@ -688,7 +688,7 @@ public static function getLoginOpacity(): string
     }
 
     /**
-     * Writes several settings to modifiers.ini (values must be simple tokens: letters, digits, dot, dash).
+     * Writes several settings to modifiers.ini (values must be simple tokens: letters, digits, dot, dash, comma).
      *
      * @param array<string, string> $values
      */
@@ -700,7 +700,7 @@ public static function getLoginOpacity(): string
         }
         $ini = parse_ini_file($file) ?: [];
         foreach ($values as $key => $value) {
-            $ini[$key] = preg_replace('/[^A-Za-z0-9._-]/', '', (string) $value);
+            $ini[$key] = preg_replace('/[^A-Za-z0-9._,-]/', '', (string) $value);
         }
         $lines = [];
         foreach ($ini as $key => $value) {
@@ -709,22 +709,41 @@ public static function getLoginOpacity(): string
         file_put_contents($file, implode("\n", $lines));
     }
 
+    /** Seasonal themes of the self-service home page (same ids and order as public/helpdesk_scene.js) */
+    public const HELPDESK_THEMES = [
+        'christmas', 'candelaria', 'carnival', 'january_festivals', 'womens_day', 'rest_week', 'mothers_day',
+        'fathers_day', 'independence', 'kites', 'love_friendship', 'halloween', 'cartagena',
+    ];
+
     /**
-     * Settings of the self-service home page (real clock and seasonal decoration).
+     * Settings of the self-service home page (real clock and seasonal themes).
      *
-     * @return array{clock: bool, clock_format: string, season: string, effects: array{snow: bool, lights: bool, decor: bool}}
+     * season: "none", "auto" (calendar) or a theme id (fixed theme).
+     * seasons: themes enabled for the automatic calendar.
+     *
+     * @return array{clock: bool, clock_format: string, season: string, seasons: string[], effects: array{snow: bool, lights: bool, decor: bool}}
      */
     public static function getHelpdeskSettings(): array
     {
         $season = self::getModifier('season', 'none');
+        if (!in_array($season, array_merge(['none', 'auto'], self::HELPDESK_THEMES), true)) {
+            $season = 'none';
+        }
+        $enabled = array_values(array_intersect(
+            self::HELPDESK_THEMES,
+            explode(',', self::getModifier('seasons', implode(',', self::HELPDESK_THEMES)))
+        ));
+        // fx_* keys; xmas_* are the names used by version 1.4.0
+        $flag = static fn(string $key, string $old) => self::getModifier($key, self::getModifier($old, '1')) === '1';
         return [
             'clock' => self::getModifier('helpdesk_clock', '0') === '1',
             'clock_format' => self::getModifier('clock_format', '12') === '24' ? '24' : '12',
-            'season' => in_array($season, ['none', 'christmas', 'auto'], true) ? $season : 'none',
+            'season' => $season,
+            'seasons' => $enabled,
             'effects' => [
-                'snow' => self::getModifier('xmas_snow', '1') === '1',
-                'lights' => self::getModifier('xmas_lights', '1') === '1',
-                'decor' => self::getModifier('xmas_decor', '1') === '1',
+                'snow' => $flag('fx_particles', 'xmas_snow'),
+                'lights' => $flag('fx_top', 'xmas_lights'),
+                'decor' => $flag('fx_decor', 'xmas_decor'),
             ],
         ];
     }

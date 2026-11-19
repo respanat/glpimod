@@ -160,13 +160,15 @@ class UIBranding
         // --- Self-service home page
         if (isset($data['helpdesk_clock'])) {
             $season = (string) ($data['season'] ?? 'none');
+            $enabled = array_values(array_intersect(BrandManager::HELPDESK_THEMES, (array) ($data['seasons'] ?? [])));
             $brandManager->setModifiers([
                 'helpdesk_clock' => $data['helpdesk_clock'] === '1' ? '1' : '0',
                 'clock_format' => ($data['clock_format'] ?? '12') === '24' ? '24' : '12',
-                'season' => in_array($season, ['none', 'christmas', 'auto'], true) ? $season : 'none',
-                'xmas_snow' => ($data['xmas_snow'] ?? '0') === '1' ? '1' : '0',
-                'xmas_lights' => ($data['xmas_lights'] ?? '0') === '1' ? '1' : '0',
-                'xmas_decor' => ($data['xmas_decor'] ?? '0') === '1' ? '1' : '0',
+                'season' => in_array($season, array_merge(['none', 'auto'], BrandManager::HELPDESK_THEMES), true) ? $season : 'none',
+                'seasons' => implode(',', $enabled),
+                'fx_decor' => ($data['fx_decor'] ?? '0') === '1' ? '1' : '0',
+                'fx_top' => ($data['fx_top'] ?? '0') === '1' ? '1' : '0',
+                'fx_particles' => ($data['fx_particles'] ?? '0') === '1' ? '1' : '0',
             ]);
         }
 
@@ -220,6 +222,30 @@ class UIBranding
             }
         }
         return false;
+    }
+
+    /**
+     * Seasonal themes with their label and dates (in the user language).
+     *
+     * @return array<string, array{label: string, dates: string}>
+     */
+    public static function getHelpdeskThemes(): array
+    {
+        return [
+            'january_festivals' => ['label' => __('Hay Festival and Cartagena Music Festival', 'glpimod'), 'dates' => __('7 – 31 January', 'glpimod')],
+            'candelaria' => ['label' => __('Fiestas de la Candelaria', 'glpimod'), 'dates' => __('30 January – 2 February', 'glpimod')],
+            'carnival' => ['label' => __('Barranquilla Carnival', 'glpimod'), 'dates' => __('the 10 days before Ash Wednesday', 'glpimod')],
+            'womens_day' => ['label' => __("Women's Day", 'glpimod'), 'dates' => __('4 – 8 March', 'glpimod')],
+            'rest_week' => ['label' => __('Holy Week (rest week)', 'glpimod'), 'dates' => __('Palm Sunday to Easter Sunday', 'glpimod')],
+            'mothers_day' => ['label' => __("Mother's Day", 'glpimod'), 'dates' => __('week of the 2nd Sunday of May', 'glpimod')],
+            'fathers_day' => ['label' => __("Father's Day and mid-year holidays", 'glpimod'), 'dates' => __('week of the 3rd Sunday of June', 'glpimod')],
+            'independence' => ['label' => __('Independence of Colombia', 'glpimod'), 'dates' => __('14 – 20 July', 'glpimod')],
+            'kites' => ['label' => __('Kite season (Battle of Boyacá)', 'glpimod'), 'dates' => __('August', 'glpimod')],
+            'love_friendship' => ['label' => __('Love and Friendship', 'glpimod'), 'dates' => __('the two weeks up to the 3rd Saturday of September', 'glpimod')],
+            'halloween' => ['label' => __("Halloween and Children's Day", 'glpimod'), 'dates' => __('24 – 31 October', 'glpimod')],
+            'cartagena' => ['label' => __('Independence of Cartagena', 'glpimod'), 'dates' => __('1 – 15 November', 'glpimod')],
+            'christmas' => ['label' => __('Christmas and Día de las Velitas', 'glpimod'), 'dates' => __('1 December – 6 January (candles on 7 and 8 December)', 'glpimod')],
+        ];
     }
 
     /**
@@ -301,6 +327,7 @@ class UIBranding
             "favicon" => BrandManager::getResourceInfo('favicon'),
             "version" => PLUGIN_GLPIMOD_VERSION,
             "helpdesk" => BrandManager::getHelpdeskSettings(),
+            "helpdesk_themes" => self::getHelpdeskThemes(),
             "plugin_url" => $CFG_GLPI['root_doc'] . "/plugins/glpimod",
         ]);
         return true;
