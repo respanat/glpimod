@@ -57,6 +57,72 @@ msgstr ""
 msgid "Colour-specific logo removed: the main logo is used instead"
 msgstr ""
 
+msgid "Hay Festival and Cartagena Music Festival"
+msgstr ""
+
+msgid "7 – 31 January"
+msgstr ""
+
+msgid "Fiestas de la Candelaria"
+msgstr ""
+
+msgid "30 January – 2 February"
+msgstr ""
+
+msgid "Barranquilla Carnival"
+msgstr ""
+
+msgid "the 10 days before Ash Wednesday"
+msgstr ""
+
+msgid "4 – 8 March"
+msgstr ""
+
+msgid "Holy Week (rest week)"
+msgstr ""
+
+msgid "Palm Sunday to Easter Sunday"
+msgstr ""
+
+msgid "week of the 2nd Sunday of May"
+msgstr ""
+
+msgid "week of the 3rd Sunday of June"
+msgstr ""
+
+msgid "Independence of Colombia"
+msgstr ""
+
+msgid "14 – 20 July"
+msgstr ""
+
+msgid "Kite season (Battle of Boyacá)"
+msgstr ""
+
+msgid "August"
+msgstr ""
+
+msgid "Love and Friendship"
+msgstr ""
+
+msgid "the two weeks up to the 3rd Saturday of September"
+msgstr ""
+
+msgid "24 – 31 October"
+msgstr ""
+
+msgid "Independence of Cartagena"
+msgstr ""
+
+msgid "1 – 15 November"
+msgstr ""
+
+msgid "Christmas and Día de las Velitas"
+msgstr ""
+
+msgid "1 December – 6 January (candles on 7 and 8 December)"
+msgstr ""
+
 msgid "Small logo"
 msgstr ""
 
@@ -279,37 +345,40 @@ msgstr ""
 msgid "24 hours (16:35)"
 msgstr ""
 
-msgid "Seasonal mode"
+msgid "Seasonal themes"
 msgstr ""
 
 msgid "Off"
 msgstr ""
 
-msgid "Automatic: Christmas from 1 December to 6 January"
+msgid "Automatic: follows the calendar of celebrations"
 msgstr ""
 
-msgid "Christmas (always on)"
+msgid "Fixed theme (every day)"
 msgstr ""
 
-msgid "Today: active, until 6 January"
+msgid "Today: %s"
 msgstr ""
 
-msgid "Today: inactive · it turns on by itself on 1 December"
+msgid "Today: no celebration · next: %1$s, from %2$s"
 msgstr ""
 
 msgid "Active every day"
 msgstr ""
 
-msgid "Christmas effects:"
+msgid "Celebrations included in the automatic calendar:"
 msgstr ""
 
-msgid "Snow on the furniture, baubles on the plant and a gift"
+msgid "Effects of the themes:"
 msgstr ""
 
-msgid "String of lights along the top"
+msgid "Decoration on the illustration"
 msgstr ""
 
-msgid "Gentle snowfall"
+msgid "Garland, pennants or lights along the top"
+msgstr ""
+
+msgid "Animated effect (snow, confetti, petals, hearts...)"
 msgstr ""
 
 msgid "Animations are disabled for users who ask their system to reduce motion."
@@ -321,7 +390,7 @@ msgstr ""
 msgid "How can we help you?"
 msgstr ""
 
-msgid "Automatic mode: the preview shows the Christmas decoration even outside the season."
+msgid "Show in the preview:"
 msgstr ""
 
 msgid "Logos and favicon may need a hard refresh (Ctrl+F5) to show up."

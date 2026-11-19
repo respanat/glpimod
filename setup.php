@@ -33,7 +33,7 @@
 use Glpi\Plugin\Hooks;
 use GlpiPlugin\Glpimod\BrandManager;
 
-const PLUGIN_GLPIMOD_VERSION = "1.4.0";
+const PLUGIN_GLPIMOD_VERSION = "1.5.0";
 
 function plugin_init_glpimod()
 {
