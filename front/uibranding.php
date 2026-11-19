@@ -39,7 +39,7 @@ if (Plugin::isPluginActive("glpimod")) {
 
     Session::checkRight("config", UPDATE);
 
-    if (isset($_POST["update"]) || isset($_POST["delete_resource"]) || isset($_POST["compress_video"])) {
+    if (isset($_POST["update"]) || isset($_POST["delete_resource"]) || isset($_POST["compress_video"]) || isset($_POST["install_ffmpeg"])) {
         $uiBranding->save($_POST, $_FILES);
         Html::back();
     } else {

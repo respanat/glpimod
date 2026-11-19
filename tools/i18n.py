@@ -90,6 +90,15 @@ es = {
 'Compress': 'Comprimir',
 'The video is larger than %s. Every visitor downloads it when opening the login page: use "Compress" to reduce it.': 'El video pesa más de %s. Cada visitante lo descarga al abrir el inicio de sesión: usa "Comprimir" para reducirlo.',
 'To compress it from here, install ffmpeg on the server:': 'Para comprimirlo desde aquí, instala ffmpeg en el servidor:',
+'Preparing the video compressor in the background. It takes about a minute.': 'Preparando el compresor de video en segundo plano. Tarda alrededor de un minuto.',
+'The video compressor could not be prepared.': 'No se pudo preparar el compresor de video.',
+'Preparing the video compressor in the background (downloading ffmpeg). Reload this page in a minute.': 'Preparando el compresor de video en segundo plano (descargando ffmpeg). Recarga esta página en un minuto.',
+'The video compressor is not available: this server does not allow PHP to run external programs (exec).': 'El compresor de video no está disponible: este servidor no permite que PHP ejecute programas externos (exec).',
+'The video compressor could not be downloaded (the server needs Internet access).': 'No se pudo descargar el compresor de video (el servidor necesita acceso a Internet).',
+'The video compressor (ffmpeg) is not installed yet.': 'El compresor de video (ffmpeg) aún no está instalado.',
+'Retry': 'Reintentar',
+'Install compressor': 'Instalar compresor',
+'Alternatively, install it on the server:': 'También puedes instalarlo en el servidor:',
 }
 missing = [i for i in ids if i not in es]
 if missing:

@@ -219,7 +219,32 @@
                                             {{ __('The video is larger than %s. Every visitor downloads it when opening the login page: use "Compress" to reduce it.', 'glpimod')|format(video_warning_label) }}
                                         {% else %}
                                             {{ __('The video is larger than %s. Every visitor downloads it when opening the login page; compress it (for example 1080p, 20-30 seconds, H.264) for a faster login.', 'glpimod')|format(video_warning_label) }}
-                                            <div class="mt-1 small">{{ __('To compress it from here, install ffmpeg on the server:', 'glpimod') }} <code>sudo apt install ffmpeg</code></div>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                                {% if not ffmpeg_available %}
+                                    <div class="border rounded-3 p-2 mb-2 small">
+                                        {% if ffmpeg_status == 'installing' %}
+                                            <span class="spinner-border spinner-border-sm text-primary me-1"></span>
+                                            {{ __('Preparing the video compressor in the background (downloading ffmpeg). Reload this page in a minute.', 'glpimod') }}
+                                        {% elseif ffmpeg_status == 'unsupported' %}
+                                            <i class="ti ti-info-circle me-1"></i>
+                                            {{ __('The video compressor is not available: this server does not allow PHP to run external programs (exec).', 'glpimod') }}
+                                        {% else %}
+                                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                                <span>
+                                                    <i class="ti ti-tool me-1"></i>
+                                                    {% if ffmpeg_status == 'failed' %}
+                                                        {{ __('The video compressor could not be downloaded (the server needs Internet access).', 'glpimod') }}
+                                                    {% else %}
+                                                        {{ __('The video compressor (ffmpeg) is not installed yet.', 'glpimod') }}
+                                                    {% endif %}
+                                                </span>
+                                                <button type="submit" name="install_ffmpeg" value="1" class="btn btn-sm btn-outline-primary">
+                                                    <i class="ti ti-download me-1"></i>{{ ffmpeg_status == 'failed' ? __('Retry', 'glpimod') : __('Install compressor', 'glpimod') }}
+                                                </button>
+                                            </div>
+                                            <div class="form-hint mt-1">{{ __('Alternatively, install it on the server:', 'glpimod') }} <code>sudo apt install ffmpeg</code></div>
                                         {% endif %}
                                     </div>
                                 {% endif %}

@@ -31,6 +31,7 @@
  */
 
 use GlpiPlugin\Glpimod\BrandManager;
+use GlpiPlugin\Glpimod\FfmpegInstaller;
 
 /**
  * Plugin install process
@@ -39,6 +40,8 @@ function plugin_glpimod_install()
 {
     $brandManager = new BrandManager();
     $brandManager->install();
+    // optional dependency: portable ffmpeg for the video compression, downloaded in the background if missing
+    FfmpegInstaller::ensure();
     return true;
 }
 

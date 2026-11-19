@@ -58,20 +58,15 @@ class VideoCompressor
         . '-progress %2$s %3$s';
 
     /**
-     * Path of the ffmpeg binary, or null when it is not installed or processes cannot be launched.
+     * Path of the ffmpeg binary: the system one, or the portable one downloaded by the plugin.
+     * Null when none is available or processes cannot be launched.
      */
     public static function getFfmpegPath(): ?string
     {
         if (!self::canLaunchProcesses()) {
             return null;
         }
-        foreach (['/usr/bin/ffmpeg', '/usr/local/bin/ffmpeg', '/opt/homebrew/bin/ffmpeg'] as $candidate) {
-            if (is_file($candidate) && is_executable($candidate)) {
-                return $candidate;
-            }
-        }
-        $found = trim((string) @exec('command -v ffmpeg 2>/dev/null'));
-        return $found !== '' && is_executable($found) ? $found : null;
+        return FfmpegInstaller::getSystemFfmpeg() ?? FfmpegInstaller::getBundledFfmpeg();
     }
 
     public static function isAvailable(): bool
@@ -79,7 +74,7 @@ class VideoCompressor
         return self::getFfmpegPath() !== null;
     }
 
-    private static function canLaunchProcesses(): bool
+    public static function canLaunchProcesses(): bool
     {
         if (!function_exists('exec') || DIRECTORY_SEPARATOR !== '/') {
             return false;

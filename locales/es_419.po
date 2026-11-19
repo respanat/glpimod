@@ -30,6 +30,12 @@ msgstr "%1$s fue rechazado: su contenido (%2$s) no corresponde a la extensión .
 msgid "could not be saved"
 msgstr "no se pudo guardar"
 
+msgid "Preparing the video compressor in the background. It takes about a minute."
+msgstr "Preparando el compresor de video en segundo plano. Tarda alrededor de un minuto."
+
+msgid "The video compressor could not be prepared."
+msgstr "No se pudo preparar el compresor de video."
+
 msgid "Compressing the background video in the background. You can keep working; the login page keeps the current video until it finishes."
 msgstr "Comprimiendo el video de fondo en segundo plano. Puedes seguir trabajando; el inicio de sesión mantiene el video actual hasta que termine."
 
@@ -180,8 +186,26 @@ msgstr "El video pesa más de %s. Cada visitante lo descarga al abrir el inicio 
 msgid "The video is larger than %s. Every visitor downloads it when opening the login page; compress it (for example 1080p, 20-30 seconds, H.264) for a faster login."
 msgstr "El video pesa más de %s. Cada visitante lo descarga al abrir el inicio de sesión; comprímelo (por ejemplo 1080p, 20-30 segundos, H.264) para que cargue más rápido."
 
-msgid "To compress it from here, install ffmpeg on the server:"
-msgstr "Para comprimirlo desde aquí, instala ffmpeg en el servidor:"
+msgid "Preparing the video compressor in the background (downloading ffmpeg). Reload this page in a minute."
+msgstr "Preparando el compresor de video en segundo plano (descargando ffmpeg). Recarga esta página en un minuto."
+
+msgid "The video compressor is not available: this server does not allow PHP to run external programs (exec)."
+msgstr "El compresor de video no está disponible: este servidor no permite que PHP ejecute programas externos (exec)."
+
+msgid "The video compressor could not be downloaded (the server needs Internet access)."
+msgstr "No se pudo descargar el compresor de video (el servidor necesita acceso a Internet)."
+
+msgid "The video compressor (ffmpeg) is not installed yet."
+msgstr "El compresor de video (ffmpeg) aún no está instalado."
+
+msgid "Retry"
+msgstr "Reintentar"
+
+msgid "Install compressor"
+msgstr "Instalar compresor"
+
+msgid "Alternatively, install it on the server:"
+msgstr "También puedes instalarlo en el servidor:"
 
 msgid "No video uploaded: the login page uses the background image."
 msgstr "No hay video cargado: el inicio de sesión usa la imagen de fondo."

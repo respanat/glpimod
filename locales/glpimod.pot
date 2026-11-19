@@ -30,6 +30,12 @@ msgstr ""
 msgid "could not be saved"
 msgstr ""
 
+msgid "Preparing the video compressor in the background. It takes about a minute."
+msgstr ""
+
+msgid "The video compressor could not be prepared."
+msgstr ""
+
 msgid "Compressing the background video in the background. You can keep working; the login page keeps the current video until it finishes."
 msgstr ""
 
@@ -180,7 +186,25 @@ msgstr ""
 msgid "The video is larger than %s. Every visitor downloads it when opening the login page; compress it (for example 1080p, 20-30 seconds, H.264) for a faster login."
 msgstr ""
 
-msgid "To compress it from here, install ffmpeg on the server:"
+msgid "Preparing the video compressor in the background (downloading ffmpeg). Reload this page in a minute."
+msgstr ""
+
+msgid "The video compressor is not available: this server does not allow PHP to run external programs (exec)."
+msgstr ""
+
+msgid "The video compressor could not be downloaded (the server needs Internet access)."
+msgstr ""
+
+msgid "The video compressor (ffmpeg) is not installed yet."
+msgstr ""
+
+msgid "Retry"
+msgstr ""
+
+msgid "Install compressor"
+msgstr ""
+
+msgid "Alternatively, install it on the server:"
 msgstr ""
 
 msgid "No video uploaded: the login page uses the background image."

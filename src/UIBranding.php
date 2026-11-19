@@ -53,6 +53,16 @@ class UIBranding
     {
         $brandManager = new BrandManager();
 
+        // --- Portable ffmpeg download (normally done automatically on plugin install/update)
+        if (isset($data['install_ffmpeg'])) {
+            if (FfmpegInstaller::start()) {
+                Session::addMessageAfterRedirect(__('Preparing the video compressor in the background. It takes about a minute.', 'glpimod'));
+            } else {
+                Session::addMessageAfterRedirect(__('The video compressor could not be prepared.', 'glpimod'), false, ERROR);
+            }
+            return;
+        }
+
         // --- Background video compression (runs in the background)
         if (isset($data['compress_video'])) {
             if (VideoCompressor::start()) {
@@ -270,6 +280,7 @@ class UIBranding
             "video_warning" => $video['size'] > BrandManager::VIDEO_WARNING_SIZE,
             "compression" => $compression,
             "ffmpeg_available" => VideoCompressor::isAvailable(),
+            "ffmpeg_status" => FfmpegInstaller::getStatus(),
             "compress_status_url" => $CFG_GLPI['root_doc'] . "/plugins/glpimod/front/compress.status.php",
             "max_upload" => \Toolbox::getSize($maxUpload),
             "video_warning_label" => \Toolbox::getSize(BrandManager::VIDEO_WARNING_SIZE),

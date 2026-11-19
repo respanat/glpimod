@@ -20,7 +20,7 @@ Del plugin original:
 
 Agregado en glpimod:
 - **Video de fondo en el login** (MP4, opcional), con botón para quitarlo y aviso cuando pesa demasiado. Si no hay video se usa la imagen JPG.
-- **Compresión del video desde la configuración**: botón *Comprimir* que reduce el video (máx. 1080p, H.264, sin audio) en segundo plano y con baja prioridad, con barra de progreso. Solo reemplaza el video si el resultado es más liviano. Requiere `ffmpeg` en el servidor.
+- **Compresión del video desde la configuración**: botón *Comprimir* que reduce el video (máx. 1080p, H.264, sin audio) en segundo plano y con baja prioridad, con barra de progreso. Solo reemplaza el video si el resultado es más liviano. El plugin prepara `ffmpeg` automáticamente (ver abajo).
 - **Opacidad de la caja de login** configurable.
 - **Logos por color**: GLPI usa una versión del logo para fondos claros, otra para fondos oscuros y otra para el menú de usuario; se puede subir una distinta para cada caso (opcional).
 - **Página de configuración rediseñada**: pestañas, estado actual de cada elemento y vista previa del login, del título y del favicon antes de guardar.
@@ -35,8 +35,21 @@ Agregado en glpimod:
 |------|-----|
 | 11.0 – 12.x | ≥ 8.2 |
 
-Opcional: `ffmpeg` en el servidor para comprimir el video de fondo desde la configuración
-(`sudo apt install ffmpeg` en Debian/Ubuntu). Sin él, todo lo demás funciona igual y el botón *Comprimir* no aparece.
+### Requisito opcional: ffmpeg (compresión del video)
+
+No hay que instalar nada a mano. Al pulsar **Instalar** o **Actualizar** el plugin en GLPI:
+
+1. Si el servidor ya tiene `ffmpeg` (por ejemplo `/usr/bin/ffmpeg`), se usa ese.
+2. Si no, el plugin descarga en segundo plano una versión portátil de `ffmpeg` en
+   `files/_plugins/glpimod/bin/` (sin permisos de administrador y sin bloquear el botón de GLPI):
+   primero desde [johnvansickle.com](https://johnvansickle.com/ffmpeg/) (verificada con MD5) y,
+   si falla, desde [BtbN/FFmpeg-Builds](https://github.com/BtbN/FFmpeg-Builds) (verificada con SHA-256).
+   El ejecutable se prueba antes de usarlo. Tarda alrededor de un minuto.
+
+Necesita que el servidor tenga salida a Internet, `curl` o `wget`, `tar` y `xz` (presentes por defecto en Debian/Ubuntu)
+y que PHP pueda ejecutar programas (`exec`). Si la descarga falla, la configuración muestra un botón para reintentar,
+o se puede instalar en el sistema con `sudo apt install ffmpeg`. Sin `ffmpeg`, todo lo demás funciona igual.
+Al desinstalar el plugin se borra también la copia portátil.
 
 ## Instalación
 
