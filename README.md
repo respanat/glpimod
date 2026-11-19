@@ -20,7 +20,9 @@ Del plugin original:
 
 Agregado en glpimod:
 - **Video de fondo en el login** (MP4, opcional). Si no hay video cargado se usa la imagen JPG.
-- **Opacidad de la caja de login** configurable, con vista previa en la configuración (en progreso: el valor guardado aún no se aplica en el login).
+- **Opacidad de la caja de login** configurable, con vista previa en la configuración.
+- Validación del contenido real de los archivos cargados (no solo la extensión).
+- Funciona instalado en `plugins` o en `marketplace`.
 - Identificador propio (`glpimod`) para que pueda convivir con el plugin original.
 
 ## Compatibilidad

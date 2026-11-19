@@ -32,6 +32,7 @@
 
 namespace GlpiPlugin\Glpimod;
 
+use Plugin;
 use Session;
 use Toolbox;
 
@@ -45,7 +46,17 @@ class BrandManager
     public const FILES_DIR = GLPI_PLUGIN_DOC_DIR . "/glpimod";
     public const BACKUP_DIR = self::FILES_DIR . "/backups";
     public const IMAGES_DIR = self::FILES_DIR . "/images";
-    public const RESOURCES_DIR = GLPI_ROOT . "/plugins/glpimod/resources";
+
+    /**
+     * Allowed MIME types per file extension (checked against the real file content on upload)
+     */
+    private const MIME_MAP = [
+        'jpg' => ['image/jpeg'],
+        'jpeg' => ['image/jpeg'],
+        'png' => ['image/png'],
+        'ico' => ['image/x-icon', 'image/vnd.microsoft.icon'],
+        'mp4' => ['video/mp4'],
+    ];
     public const IMAGE_RESOURCES = [
         /*
          * Something special about background.jpg:
@@ -68,7 +79,7 @@ class BrandManager
          *
          */
         "background" => [
-            "default" => self::RESOURCES_DIR . "/images/background.jpg",
+            "default" => "background.jpg",
             "current" => self::IMAGES_DIR . "/background.jpg",
 //            "active" => GLPI_ROOT . "/public/pics/plugin_glpimod_background.jpg",
             "accept" => ["jpeg", "jpg"]
@@ -79,14 +90,14 @@ class BrandManager
             "accept" => ["mp4"]
         ],
         "favicon" => [
-            "default" => self::RESOURCES_DIR . "/images/favicon.ico",
+            "default" => "favicon.ico",
             "current" => self::IMAGES_DIR . "/favicon.ico",
             "active" => GLPI_ROOT . "/public/pics/favicon.ico",
             "backup" => self::BACKUP_DIR . "/favicon.ico",
             "accept" => ["ico"]
         ],
         "logo_s" => [
-            "default" => self::RESOURCES_DIR . "/images/logo-G-100.png",
+            "default" => "logo-G-100.png",
             "current" => self::IMAGES_DIR . "/logo-G-100.png",
             "active" => [
                 GLPI_ROOT . "/public/pics/logos/logo-G-100-black.png",
@@ -101,7 +112,7 @@ class BrandManager
             "accept" => ["png"]
         ],
         "logo_m" => [
-            "default" => self::RESOURCES_DIR . "/images/logo-GLPI-100.png",
+            "default" => "logo-GLPI-100.png",
             "current" => self::IMAGES_DIR . "/logo-GLPI-100.png",
             "active" => [
                 GLPI_ROOT . "/public/pics/logos/logo-GLPI-100-black.png",
@@ -116,7 +127,7 @@ class BrandManager
             "accept" => ["png"]
         ],
         "logo_l" => [
-            "default" => self::RESOURCES_DIR . "/images/logo-GLPI-250.png",
+            "default" => "logo-GLPI-250.png",
             "current" => self::IMAGES_DIR . "/logo-GLPI-250.png",
             "active" => [
                 GLPI_ROOT . "/public/pics/logos/logo-GLPI-250-black.png",
@@ -135,9 +146,19 @@ class BrandManager
     /**
      * @return bool
      */
+    /**
+     * Resources directory of the plugin (works when installed in plugins/ or marketplace/).
+     *
+     * @return string
+     */
+    public static function getResourceDir(): string
+    {
+        return Plugin::getPhpDir('glpimod') . "/resources";
+    }
+
     private static function initModifiers(): bool
     {
-        return copy(self::RESOURCES_DIR . "/modifiers.ini", self::FILES_DIR . "/modifiers.ini");
+        return copy(self::getResourceDir() . "/modifiers.ini", self::FILES_DIR . "/modifiers.ini");
     }
 
     /**
@@ -178,7 +199,7 @@ class BrandManager
         $someBackupCreated = false;
         foreach (self::IMAGE_RESOURCES as $imageResource => $paths) {
             if (!file_exists($paths["current"]) && isset($paths["default"])) {
-                if (!copy($paths["default"], $paths["current"])) {
+                if (!copy(self::getResourceDir() . "/images/" . $paths["default"], $paths["current"])) {
                     die("Unable to install $imageResource resource");
                 }
                 $someResourceInstalled = true;
@@ -366,6 +387,11 @@ class BrandManager
         $extension = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
         if (!in_array($extension, self::IMAGE_RESOURCES[$resourceName]["accept"], true)) {
             Session::addMessageAfterRedirect(sprintf("❌ Uploaded file %s is invalid (only %s accepted)", $file["name"], implode(", ", self::IMAGE_RESOURCES[$resourceName]["accept"])));
+            return false;
+        }
+        $mime = mime_content_type($file["tmp_name"]);
+        if (isset(self::MIME_MAP[$extension]) && !in_array($mime, self::MIME_MAP[$extension], true)) {
+            Session::addMessageAfterRedirect(sprintf("❌ Uploaded file %s is invalid (content is %s, not %s)", $file["name"], $mime ?: "unknown", $extension));
             return false;
         }
         if (!move_uploaded_file($file["tmp_name"], self::IMAGE_RESOURCES[$resourceName]["current"])) {

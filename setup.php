@@ -33,7 +33,7 @@
 use Glpi\Plugin\Hooks;
 use GlpiPlugin\Glpimod\BrandManager;
 
-const PLUGIN_GLPIMOD_VERSION = "1.0.0";
+const PLUGIN_GLPIMOD_VERSION = "1.0.1";
 
 function plugin_init_glpimod()
 {
@@ -48,10 +48,8 @@ function plugin_init_glpimod()
 
             $PLUGIN_HOOKS[Hooks::ADD_CSS_ANONYMOUS_PAGE]["glpimod"] = "./css/glpimod_anonymous.css";
 
-            // Background video is optional: inject it only when one has been uploaded
-            if (BrandManager::hasBackgroundVideo()) {
-                $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT_ANONYMOUS_PAGE]["glpimod"] = "./public/login_video.js";
-            }
+            // Applies the configured login box opacity and the optional background video
+            $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT_ANONYMOUS_PAGE]["glpimod"] = "./public/login_video.js";
         }
     }
 }

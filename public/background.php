@@ -37,8 +37,23 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 use GlpiPlugin\Glpimod\BrandManager;
 
-// ?type=video -> login background video (MP4, optional); otherwise -> background image (JPG)
-if (($_GET['type'] ?? '') === 'video') {
+// ?type=config -> login settings (JSON); ?type=video -> background video (MP4, optional); otherwise -> background image (JPG)
+$type = $_GET['type'] ?? '';
+
+if ($type === 'config') {
+    $response = new Response(
+        json_encode([
+            'opacity' => (float) BrandManager::getLoginOpacity(),
+            'video'   => BrandManager::hasBackgroundVideo(),
+        ]),
+        200,
+        ['Content-Type' => 'application/json']
+    );
+    $response->headers->set('Cache-Control', 'no-cache, must-revalidate');
+    return $response;
+}
+
+if ($type === 'video') {
     $file = BrandManager::IMAGE_RESOURCES["background_video"]["current"];
     $mime = 'video/mp4';
 } else {

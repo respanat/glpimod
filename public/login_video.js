@@ -1,37 +1,43 @@
 /*
  * glpimod - GLPI Mod (based on "UI Branding plugin for GLPI" by i-Vertix)
- * Injects the optional login background video.
- * Only loaded by setup.php when a background video has been uploaded.
+ * Login page: applies the configured login box opacity and injects
+ * the optional background video.
  */
 (function () {
     'use strict';
 
-    // Build the video URL relative to this script, so it works whatever the GLPI root URL is
+    // URLs relative to this script, so they work whatever the GLPI root URL is
     const script = document.currentScript;
-    const videoUrl = script && script.src
-        ? script.src.replace(/login_video\.js(\?.*)?$/, 'background.php?type=video')
-        : null;
+    const base = script && script.src ? script.src.replace(/login_video\.js(\?.*)?$/, 'background.php') : null;
+    if (!base) {
+        return;
+    }
 
-    let attempts = 0;
-    const maxAttempts = 50;
+    function whenContainerReady(callback) {
+        let attempts = 0;
+        (function check() {
+            const container = document.querySelector('.welcome-anonymous');
+            if (container) {
+                callback(container);
+            } else if (++attempts < 50) {
+                setTimeout(check, 100);
+            }
+        })();
+    }
 
-    function injectVideo() {
-        const container = document.querySelector('.welcome-anonymous');
-        if (!container || !videoUrl) {
-            return false;
+    function applyOpacity(opacity) {
+        if (typeof opacity === 'number' && opacity >= 0.05 && opacity <= 1) {
+            document.documentElement.style.setProperty('--login-opacity', String(opacity));
         }
+    }
 
-        // Fallback opacity (to be replaced by the configured value)
-        document.documentElement.style.setProperty('--login-opacity', '0.65');
-
-        const existingVideo = container.querySelector('video.glpimod-background');
-        if (existingVideo) {
-            return true;
+    function injectVideo(container) {
+        if (container.querySelector('video.glpimod-background')) {
+            return;
         }
-
         const video = document.createElement('video');
         video.className = 'glpimod-background';
-        video.src = videoUrl;
+        video.src = base + '?type=video';
         video.autoplay = true;
         video.loop = true;
         video.muted = true;
@@ -43,22 +49,17 @@
         video.play().catch(function (e) {
             console.log('glpimod: video play error', e);
         });
-
-        return true;
     }
 
-    function tryInject() {
-        attempts++;
-        if (injectVideo()) {
-            return;
-        }
-        if (attempts < maxAttempts) {
-            setTimeout(tryInject, 100);
-        }
-    }
-
-    tryInject();
-    ['DOMContentLoaded', 'load'].forEach(function (event) {
-        document.addEventListener(event, tryInject, {once: true});
-    });
+    fetch(base + '?type=config', {credentials: 'same-origin'})
+        .then(function (r) { return r.ok ? r.json() : {}; })
+        .then(function (config) {
+            applyOpacity(config.opacity);
+            if (config.video) {
+                whenContainerReady(injectVideo);
+            }
+        })
+        .catch(function (e) {
+            console.log('glpimod: could not load login settings', e);
+        });
 })();
