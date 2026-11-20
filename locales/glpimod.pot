@@ -30,6 +30,15 @@ msgstr ""
 msgid "could not be saved"
 msgstr ""
 
+msgid "GLPI page"
+msgstr ""
+
+msgid "External link"
+msgstr ""
+
+msgid "Form"
+msgstr ""
+
 msgid "Preparing the video compressor in the background. It takes about a minute."
 msgstr ""
 
@@ -46,6 +55,15 @@ msgid "The video is being compressed: wait for it to finish before uploading ano
 msgstr ""
 
 msgid "Background video uploaded"
+msgstr ""
+
+msgid "%d texts of the self-service portal updated"
+msgstr ""
+
+msgid "The custom texts could not be saved: check the permissions of the files folder of GLPI."
+msgstr ""
+
+msgid "Custom GLPI texts saved for %1$s: %2$d"
 msgstr ""
 
 msgid "Configuration saved"
@@ -178,6 +196,9 @@ msgid "Title and favicon"
 msgstr ""
 
 msgid "Self-service portal"
+msgstr ""
+
+msgid "Texts"
 msgstr ""
 
 msgid "Page title"
@@ -391,6 +412,84 @@ msgid "How can we help you?"
 msgstr ""
 
 msgid "Show in the preview:"
+msgstr ""
+
+msgid "Tiles of the self-service home page"
+msgstr ""
+
+msgid "Use all the suggestions"
+msgstr ""
+
+msgid "GLPI saves these texts in the database when it creates the tiles, in the language used at that moment, so the language files do not translate them. Edit them here; the changes apply to everyone."
+msgstr ""
+
+msgid "No tiles found (GLPI 11 or later is needed)."
+msgstr ""
+
+msgid "Tile"
+msgstr ""
+
+msgid "Use suggestion"
+msgstr ""
+
+msgid "Suggestion:"
+msgstr ""
+
+msgid "Form tiles show the name and description of the form: changing them here also changes them in the service catalog. If a tile has a translation for the user language (Setup > General > Helpdesk translations), that translation is shown instead."
+msgstr ""
+
+msgid "GLPI interface texts"
+msgstr ""
+
+msgid "Replace any text of GLPI that is untranslated or badly translated. The changes are kept apart from GLPI, so they survive its updates, and stop applying if the plugin is disabled."
+msgstr ""
+
+msgid "Suggested corrections"
+msgstr ""
+
+msgid "the GLPI translation has texts that do not fit this language (for example the \"voseo\": \"Solicitá\", \"Usá\")."
+msgstr ""
+
+msgid "Add %d corrections"
+msgstr ""
+
+msgid "Search a text as you see it in GLPI (in English or in the translation)..."
+msgstr ""
+
+msgid "No custom texts yet: search for a text above to change it."
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Singular"
+msgstr ""
+
+msgid "Plural"
+msgstr ""
+
+msgid "(untranslated)"
+msgstr ""
+
+msgid "No texts found"
+msgstr ""
+
+msgid "Change"
+msgstr ""
+
+msgid "Already in the list"
+msgstr ""
+
+msgid "Original text (English)"
+msgstr ""
+
+msgid "Current GLPI translation"
+msgstr ""
+
+msgid "Your text"
+msgstr ""
+
+msgid "Changes apply when you press Save. Texts of other plugins are not included."
 msgstr ""
 
 msgid "Logos and favicon may need a hard refresh (Ctrl+F5) to show up."

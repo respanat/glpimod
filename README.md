@@ -28,6 +28,10 @@ Agregado en glpimod:
   - cada tema tiene adornos sobre la ilustración, un elemento superior (luces, banderines, guirnalda) y un efecto animado suave (nieve, confeti, pétalos, corazones, cometas...); cada capa se puede desactivar y las animaciones respetan la preferencia de "reducir movimiento" del sistema.
 - **Logos por color**: GLPI usa una versión del logo para fondos claros, otra para fondos oscuros y otra para el menú de usuario; se puede subir una distinta para cada caso (opcional).
 - **Página de configuración rediseñada**: pestañas, estado actual de cada elemento y vista previa del login, del título y del favicon antes de guardar.
+- **Corrector de textos** (pestaña *Textos*):
+  - edita el título y la descripción de las **tarjetas del inicio del portal de autoservicio** ("Browse help articles", "See your tickets"...). GLPI 11 las guarda en la base de datos en el idioma que se usaba al crearlas, por eso quedan en inglés aunque el idioma esté traducido al 99 %. Para español propone textos neutros y permite aplicarlos de una vez;
+  - reemplaza **cualquier texto de la interfaz de GLPI** que esté sin traducir o mal traducido, con un buscador (en inglés o en la traducción) y soporte de plurales. Trae correcciones sugeridas, por ejemplo el voseo que tiene es_MX ("Solicitá", "Usá");
+  - los cambios se guardan en `files/_locales/core_glpimod/` (carpeta que GLPI carga después de sus propias traducciones), así se conservan al actualizar GLPI y dejan de aplicar si se desactiva el plugin.
 - Traducción al español (es_CO, es_ES, es_MX, es_419).
 - Validación del contenido real de los archivos cargados (no solo la extensión).
 - Funciona instalado en `plugins` o en `marketplace`.
@@ -84,12 +88,13 @@ Al desinstalar el plugin se borra también la copia portátil.
 
 ## Uso
 
-La configuración está en **Configuración → Plugins → GLPI Mod** (botón de configuración) y tiene cuatro pestañas:
+La configuración está en **Configuración → Plugins → GLPI Mod** (botón de configuración) y tiene cinco pestañas:
 
 - **Título y favicon**: texto de la pestaña del navegador y favicon (.ico), con vista previa.
 - **Inicio de sesión**: activar la personalización, opacidad de la caja (0.05 transparente – 1 sólida), video de fondo (.mp4, recomendado 1920×1080 y menos de 10 MB) e imagen de fondo (.jpg). Vista previa en vivo.
 - **Logos**: logo pequeño, mediano y grande (.png), vistos sobre fondo claro y oscuro; y, opcionalmente, un archivo distinto por color.
 - **Portal de autoservicio**: reloj con la hora real y temporadas (automático según el calendario o un tema fijo), con vista previa de cada tema.
+- **Textos**: tarjetas del inicio del portal (título y descripción, con sugerencias en español) y textos de la interfaz de GLPI por idioma (buscar un texto → *Cambiar* → escribir el nuevo → *Guardar*).
 
 > [!TIP]
 > Al actualizar el plugin con `git pull`, si cambia la versión, GLPI lo marca como "pendiente de actualizar" y deja de aplicarlo

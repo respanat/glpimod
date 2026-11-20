@@ -30,6 +30,15 @@ msgstr "%1$s fue rechazado: su contenido (%2$s) no corresponde a la extensión .
 msgid "could not be saved"
 msgstr "no se pudo guardar"
 
+msgid "GLPI page"
+msgstr "Página de GLPI"
+
+msgid "External link"
+msgstr "Enlace externo"
+
+msgid "Form"
+msgstr "Formulario"
+
 msgid "Preparing the video compressor in the background. It takes about a minute."
 msgstr "Preparando el compresor de video en segundo plano. Tarda alrededor de un minuto."
 
@@ -47,6 +56,15 @@ msgstr "El video se está comprimiendo: espera a que termine antes de cambiarlo.
 
 msgid "Background video uploaded"
 msgstr "Video de fondo cargado"
+
+msgid "%d texts of the self-service portal updated"
+msgstr "Se actualizaron %d textos del portal de autoservicio"
+
+msgid "The custom texts could not be saved: check the permissions of the files folder of GLPI."
+msgstr "No se pudieron guardar los textos personalizados: revise los permisos de la carpeta files de GLPI."
+
+msgid "Custom GLPI texts saved for %1$s: %2$d"
+msgstr "Textos personalizados de GLPI guardados para %1$s: %2$d"
 
 msgid "Configuration saved"
 msgstr "Configuración guardada"
@@ -179,6 +197,9 @@ msgstr "Título y favicon"
 
 msgid "Self-service portal"
 msgstr "Portal de autoservicio"
+
+msgid "Texts"
+msgstr "Textos"
 
 msgid "Page title"
 msgstr "Título de la página"
@@ -392,6 +413,84 @@ msgstr "¿Cómo podemos ayudarte?"
 
 msgid "Show in the preview:"
 msgstr "Ver en la vista previa:"
+
+msgid "Tiles of the self-service home page"
+msgstr "Tarjetas del inicio del portal de autoservicio"
+
+msgid "Use all the suggestions"
+msgstr "Usar todas las sugerencias"
+
+msgid "GLPI saves these texts in the database when it creates the tiles, in the language used at that moment, so the language files do not translate them. Edit them here; the changes apply to everyone."
+msgstr "GLPI guarda estos textos en la base de datos al crear las tarjetas, en el idioma que se usaba en ese momento, por eso los archivos de idioma no los traducen. Edítelos aquí; los cambios aplican para todos."
+
+msgid "No tiles found (GLPI 11 or later is needed)."
+msgstr "No se encontraron tarjetas (se necesita GLPI 11 o posterior)."
+
+msgid "Tile"
+msgstr "Tarjeta"
+
+msgid "Use suggestion"
+msgstr "Usar sugerencia"
+
+msgid "Suggestion:"
+msgstr "Sugerencia:"
+
+msgid "Form tiles show the name and description of the form: changing them here also changes them in the service catalog. If a tile has a translation for the user language (Setup > General > Helpdesk translations), that translation is shown instead."
+msgstr "Las tarjetas de formulario muestran el nombre y la descripción del formulario: cambiarlos aquí también los cambia en el catálogo de servicios. Si una tarjeta tiene traducción para el idioma del usuario (Configuración > General > Traducciones del helpdesk), se muestra esa traducción."
+
+msgid "GLPI interface texts"
+msgstr "Textos de la interfaz de GLPI"
+
+msgid "Replace any text of GLPI that is untranslated or badly translated. The changes are kept apart from GLPI, so they survive its updates, and stop applying if the plugin is disabled."
+msgstr "Reemplace cualquier texto de GLPI que esté sin traducir o mal traducido. Los cambios se guardan aparte de GLPI, así que se conservan al actualizarlo, y dejan de aplicar si se desactiva el plugin."
+
+msgid "Suggested corrections"
+msgstr "Correcciones sugeridas"
+
+msgid "the GLPI translation has texts that do not fit this language (for example the \"voseo\": \"Solicitá\", \"Usá\")."
+msgstr "la traducción de GLPI tiene textos que no corresponden a este idioma (por ejemplo el voseo: \"Solicitá\", \"Usá\")."
+
+msgid "Add %d corrections"
+msgstr "Agregar %d correcciones"
+
+msgid "Search a text as you see it in GLPI (in English or in the translation)..."
+msgstr "Busque un texto tal como lo ve en GLPI (en inglés o en la traducción)..."
+
+msgid "No custom texts yet: search for a text above to change it."
+msgstr "Aún no hay textos personalizados: busque un texto arriba para cambiarlo."
+
+msgid "Remove"
+msgstr "Quitar"
+
+msgid "Singular"
+msgstr "Singular"
+
+msgid "Plural"
+msgstr "Plural"
+
+msgid "(untranslated)"
+msgstr "(sin traducir)"
+
+msgid "No texts found"
+msgstr "No se encontraron textos"
+
+msgid "Change"
+msgstr "Cambiar"
+
+msgid "Already in the list"
+msgstr "Ya está en la lista"
+
+msgid "Original text (English)"
+msgstr "Texto original (inglés)"
+
+msgid "Current GLPI translation"
+msgstr "Traducción actual de GLPI"
+
+msgid "Your text"
+msgstr "Su texto"
+
+msgid "Changes apply when you press Save. Texts of other plugins are not included."
+msgstr "Los cambios se aplican al pulsar Guardar. No incluye los textos de otros plugins."
 
 msgid "Logos and favicon may need a hard refresh (Ctrl+F5) to show up."
 msgstr "Puede que los logos y el favicon necesiten recargar con Ctrl+F5 para verse."

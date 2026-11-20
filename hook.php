@@ -32,6 +32,7 @@
 
 use GlpiPlugin\Glpimod\BrandManager;
 use GlpiPlugin\Glpimod\FfmpegInstaller;
+use GlpiPlugin\Glpimod\TextFixer;
 
 /**
  * Plugin install process
@@ -50,6 +51,8 @@ function plugin_glpimod_install()
  */
 function plugin_glpimod_uninstall()
 {
+    // custom GLPI texts stop applying before their files are removed
+    TextFixer::publish(false);
     $brandManager = new BrandManager();
     $brandManager->uninstall();
     return true;
@@ -65,6 +68,8 @@ function plugin_glpimod_activate()
         }
     }
     $brandManager->applyLoginPageModifier();
+    // custom GLPI texts (they are loaded by GLPI itself, so they only apply while the plugin is active)
+    TextFixer::publish(true);
 }
 
 function plugin_glpimod_deactivate()
@@ -78,4 +83,5 @@ function plugin_glpimod_deactivate()
         }
     }
     $brandManager->disableLoginPageModifier();
+    TextFixer::publish(false);
 }

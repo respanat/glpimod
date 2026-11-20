@@ -172,6 +172,21 @@ class UIBranding
             ]);
         }
 
+        // --- Texts: helpdesk tiles and GLPI core strings
+        if (isset($data['texts_lang'])) {
+            $tiles = TextFixer::saveTiles(is_array($data['tiles'] ?? null) ? $data['tiles'] : []);
+            if ($tiles > 0) {
+                Session::addMessageAfterRedirect(sprintf(__('%d texts of the self-service portal updated', 'glpimod'), $tiles));
+            }
+            $lang = (string) $data['texts_lang'];
+            $saved = TextFixer::saveOverrides($lang, is_array($data['overrides'] ?? null) ? $data['overrides'] : []);
+            if ($saved === -1) {
+                Session::addMessageAfterRedirect(__('The custom texts could not be saved: check the permissions of the files folder of GLPI.', 'glpimod'), false, ERROR);
+            } else if ($saved >= 0) {
+                Session::addMessageAfterRedirect(sprintf(__('Custom GLPI texts saved for %1$s: %2$d', 'glpimod'), $lang, $saved));
+            }
+        }
+
         Session::addMessageAfterRedirect(__('Configuration saved', 'glpimod'));
     }
 
@@ -304,6 +319,12 @@ class UIBranding
         }
         $compression['old_label'] = \Toolbox::getSize($compression['old_size']);
         $compression['new_label'] = \Toolbox::getSize($compression['new_size']);
+        $textsLang = (string) ($_GET['texts_lang'] ?? ($_SESSION['glpilanguage'] ?? 'en_GB'));
+        if (!TextFixer::isValidLanguage($textsLang)) {
+            $textsLang = TextFixer::isValidLanguage((string) ($_SESSION['glpilanguage'] ?? '')) ? (string) $_SESSION['glpilanguage'] : 'en_GB';
+        }
+        $tiles = TextFixer::getTiles();
+
         $maxUpload = min(self::iniBytes((string) ini_get('upload_max_filesize')), self::iniBytes((string) ini_get('post_max_size')));
 
         TemplateRenderer::getInstance()->display('@glpimod/uibranding.html.twig', [
@@ -329,6 +350,13 @@ class UIBranding
             "helpdesk" => BrandManager::getHelpdeskSettings(),
             "helpdesk_themes" => self::getHelpdeskThemes(),
             "plugin_url" => $CFG_GLPI['root_doc'] . "/plugins/glpimod",
+            "tiles" => $tiles,
+            "tiles_suggestions" => count(array_filter($tiles, static fn($t) => $t['has_suggestion'])),
+            "texts_lang" => $textsLang,
+            "texts_languages" => TextFixer::getLanguages(),
+            "overrides" => TextFixer::getOverrideRows($textsLang),
+            "override_suggestions" => TextFixer::getSuggestions($textsLang),
+            "texts_search_url" => $CFG_GLPI['root_doc'] . "/plugins/glpimod/front/texts.search.php",
         ]);
         return true;
     }
