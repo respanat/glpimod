@@ -141,6 +141,30 @@ msgstr "Navidad y Día de las Velitas"
 msgid "1 December – 6 January (candles on 7 and 8 December)"
 msgstr "1 de diciembre – 6 de enero (velitas el 7 y 8 de diciembre)"
 
+msgid "10 – 14 February"
+msgstr "10 – 14 de febrero"
+
+msgid "14 – 17 March"
+msgstr "14 – 17 de marzo"
+
+msgid "Memorial Day"
+msgstr "Memorial Day (Día de los Caídos)"
+
+msgid "long weekend of the last Monday of May"
+msgstr "fin de semana largo del último lunes de mayo"
+
+msgid "Independence Day (4th of July)"
+msgstr "Día de la Independencia (4 de julio)"
+
+msgid "1 – 4 July"
+msgstr "1 – 4 de julio"
+
+msgid "Thanksgiving"
+msgstr "Día de Acción de Gracias"
+
+msgid "week of the 4th Thursday of November"
+msgstr "semana del 4.º jueves de noviembre"
+
 msgid "Small logo"
 msgstr "Logo pequeño"
 
@@ -167,6 +191,12 @@ msgstr "Para fondos oscuros"
 
 msgid "User menu"
 msgstr "Menú de usuario"
+
+msgid "Colombia and the Caribbean"
+msgstr "Colombia y el Caribe"
+
+msgid "United States"
+msgstr "Estados Unidos"
 
 msgid "Branding"
 msgstr "Imagen de marca"
