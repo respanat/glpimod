@@ -190,6 +190,18 @@ es = {
 'Current GLPI translation': 'Traducción actual de GLPI',
 'Your text': 'Su texto',
 'Changes apply when you press Save. Texts of other plugins are not included.': 'Los cambios se aplican al pulsar Guardar. No incluye los textos de otros plugins.',
+"Valentine's Day": 'San Valentín',
+'10 – 14 February': '10 – 14 de febrero',
+"St. Patrick's Day": 'Día de San Patricio',
+'14 – 17 March': '14 – 17 de marzo',
+'Memorial Day': 'Memorial Day (Día de los Caídos)',
+'long weekend of the last Monday of May': 'fin de semana largo del último lunes de mayo',
+'Independence Day (4th of July)': 'Día de la Independencia (4 de julio)',
+'1 – 4 July': '1 – 4 de julio',
+'Thanksgiving': 'Día de Acción de Gracias',
+'week of the 4th Thursday of November': 'semana del 4.º jueves de noviembre',
+'Colombia and the Caribbean': 'Colombia y el Caribe',
+'United States': 'Estados Unidos',
 }
 missing = [i for i in ids if i not in es]
 if missing:

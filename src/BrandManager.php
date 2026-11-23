@@ -713,7 +713,12 @@ public static function getLoginOpacity(): string
     public const HELPDESK_THEMES = [
         'christmas', 'candelaria', 'carnival', 'january_festivals', 'womens_day', 'rest_week', 'mothers_day',
         'fathers_day', 'independence', 'kites', 'love_friendship', 'halloween', 'cartagena',
+        // United States
+        'valentines', 'st_patricks', 'memorial_day', 'us_independence', 'thanksgiving',
     ];
+
+    /** Themes added in 1.7.0: enabled automatically for calendars saved with an older version */
+    public const HELPDESK_THEMES_US = ['valentines', 'st_patricks', 'memorial_day', 'us_independence', 'thanksgiving'];
 
     /**
      * Settings of the self-service home page (real clock and seasonal themes).
@@ -729,10 +734,12 @@ public static function getLoginOpacity(): string
         if (!in_array($season, array_merge(['none', 'auto'], self::HELPDESK_THEMES), true)) {
             $season = 'none';
         }
-        $enabled = array_values(array_intersect(
-            self::HELPDESK_THEMES,
-            explode(',', self::getModifier('seasons', implode(',', self::HELPDESK_THEMES)))
-        ));
+        $saved = explode(',', self::getModifier('seasons', implode(',', self::HELPDESK_THEMES)));
+        if (self::getModifier('seasons_us', '') === '') {
+            // calendar saved before the United States themes existed: include them
+            $saved = array_merge($saved, self::HELPDESK_THEMES_US);
+        }
+        $enabled = array_values(array_intersect(self::HELPDESK_THEMES, $saved));
         // fx_* keys; xmas_* are the names used by version 1.4.0
         $flag = static fn(string $key, string $old) => self::getModifier($key, self::getModifier($old, '1')) === '1';
         return [

@@ -97,6 +97,12 @@
         return day(y, m, 1 + ((7 + weekday - first.getDay()) % 7) + (n - 1) * 7);
     }
 
+    /** last given weekday (0 = Sunday) of a month */
+    function lastWeekday(y, m, weekday) {
+        const last = day(y, m + 1, 0);
+        return day(y, m, last.getDate() - ((7 + last.getDay() - weekday) % 7));
+    }
+
     /**
      * Theme dates for a year: [start, end] inclusive. Order = priority when two themes overlap.
      */
@@ -114,6 +120,12 @@
         love_friendship: function (y) { const s = nthWeekday(y, 8, 6, 3); return [addDays(s, -13), s]; },
         halloween: function (y) { return [day(y, 9, 24), day(y, 9, 31)]; },
         cartagena: function (y) { return [day(y, 10, 1), day(y, 10, 15)]; },
+        // United States
+        valentines: function (y) { return [day(y, 1, 10), day(y, 1, 14)]; },
+        st_patricks: function (y) { return [day(y, 2, 14), day(y, 2, 17)]; },
+        memorial_day: function (y) { const m = lastWeekday(y, 4, 1); return [addDays(m, -3), m]; },
+        us_independence: function (y) { return [day(y, 6, 1), day(y, 6, 4)]; },
+        thanksgiving: function (y) { const t = nthWeekday(y, 10, 4, 4); return [addDays(t, -3), addDays(t, 3)]; },
     };
     const ORDER = Object.keys(CALENDAR);
 
@@ -482,6 +494,97 @@
         el('circle', {cx: 0, cy: -15, r: 6, fill: 'rgba(255,230,140,.9)', class: 'glpimod-flame'}, g);
     }
 
+    function shamrock(parent, x, y, s, color) {
+        const g = at(parent, x, y, s || 1);
+        [0, 120, 240].forEach(function (r) {
+            el('path', {d: 'M0 0 C-9 -6 -9 -16 -2.5 -16 C-1 -16 0 -15 0 -13 C0 -15 1 -16 2.5 -16 C9 -16 9 -6 0 0 Z', fill: color || C.green, transform: 'rotate(' + r + ')'}, g);
+        });
+        el('path', {d: 'M0 0 Q3 10 8 15', stroke: color || C.green, 'stroke-width': '2', fill: 'none'}, g);
+    }
+
+    function leprechaunHat(parent, x, y, s) { // standing on y
+        const g = at(parent, x, y, s || 1);
+        el('ellipse', {cx: 0, cy: -3, rx: 26, ry: 5, fill: '#1f7a43'}, g);
+        el('path', {d: 'M-15 -4 L-12 -38 L12 -38 L15 -4 Z', fill: '#2a9d55'}, g);
+        el('rect', {x: -14, y: -16, width: 28, height: 6, fill: C.dark}, g);
+        el('rect', {x: -5, y: -18, width: 10, height: 10, rx: 1, fill: 'none', stroke: C.gold, 'stroke-width': '2.2'}, g);
+        shamrock(g, 9, -30, 0.45, '#8fd694');
+    }
+
+    function potOfGold(parent, x, y, s) { // standing on y
+        const g = at(parent, x, y, s || 1);
+        [[-10, -27], [-2, -31], [7, -28], [14, -25], [-15, -24], [2, -24]].forEach(function (c) {
+            el('ellipse', {cx: c[0], cy: c[1], rx: 6, ry: 3, fill: C.gold, stroke: '#b8901f', 'stroke-width': '0.8'}, g);
+        });
+        el('path', {d: 'M-20 -22 Q-24 -2 -12 0 L12 0 Q24 -2 20 -22 Z', fill: C.dark}, g);
+        el('rect', {x: -22, y: -25, width: 44, height: 5, rx: 2.5, fill: '#3c4757'}, g);
+    }
+
+    function rose(parent, x, y, s, color) {
+        const g = at(parent, x, y, s || 1);
+        el('circle', {cx: 0, cy: 0, r: 8, fill: color || C.red}, g);
+        el('path', {d: 'M-5 -1 Q0 -8 5 -1 Q0 4 -5 -1 Z M-3 2 Q0 -3 4 2', stroke: 'rgba(0,0,0,.25)', 'stroke-width': '1.2', fill: 'none'}, g);
+        el('path', {d: 'M-8 2 Q-12 6 -8 9 Q-4 7 -6 3 Z M8 2 Q12 6 8 9 Q4 7 6 3 Z', fill: C.green}, g);
+    }
+
+    function rosesVase(parent, x, y, s) { // standing on y
+        const g = at(parent, x, y, s || 1);
+        [[-9, -52], [0, -62], [9, -50]].forEach(function (t) {
+            el('path', {d: 'M0 -18 Q' + (t[0] / 2) + ' ' + (t[1] / 2) + ' ' + t[0] + ' ' + t[1], stroke: C.green, 'stroke-width': '2', fill: 'none'}, g);
+            rose(g, t[0], t[1], 0.8, C.red);
+        });
+        el('path', {d: 'M-11 -20 L11 -20 L8 0 L-8 0 Z', fill: C.pink}, g);
+    }
+
+    function usFlag(parent, x, y, s) { // flag on a stick, base on (x, y)
+        const g = at(parent, x, y, s || 1);
+        el('line', {x1: 0, y1: 0, x2: 0, y2: -60, stroke: C.dark, 'stroke-width': '2'}, g);
+        for (let i = 0; i < 7; i++) {
+            el('rect', {x: 1, y: -58 + i * (24 / 7), width: 38, height: 24 / 7 + 0.2, fill: i % 2 ? C.white : '#c8323a'}, g);
+        }
+        el('rect', {x: 1, y: -58, width: 16, height: 13, fill: '#2b3f8c'}, g);
+        for (let r = 0; r < 3; r++) for (let c = 0; c < 4; c++) {
+            el('circle', {cx: 3.5 + c * 3.8, cy: -55.5 + r * 4, r: 0.9, fill: C.white}, g);
+        }
+    }
+
+    function poppy(parent, x, y, s) {
+        const g = at(parent, x, y, s || 1);
+        [0, 90, 180, 270].forEach(function (r) {
+            el('ellipse', {cx: 0, cy: -5, rx: 5.5, ry: 6, fill: '#d62f2f', transform: 'rotate(' + r + ')'}, g);
+        });
+        el('circle', {cx: 0, cy: 0, r: 3, fill: C.dark}, g);
+    }
+
+    function pie(parent, x, y, s) { // pumpkin pie standing on y
+        const g = at(parent, x, y, s || 1);
+        el('ellipse', {cx: 0, cy: -2, rx: 26, ry: 6, fill: C.white, stroke: 'rgba(0,0,0,.12)'}, g);
+        el('path', {d: 'M-22 -4 L-19 -14 L19 -14 L22 -4 Z', fill: '#d9a05b'}, g);
+        el('ellipse', {cx: 0, cy: -14, rx: 19, ry: 4.5, fill: '#e07b2e'}, g);
+        for (let i = -16; i <= 16; i += 5) el('circle', {cx: i, cy: -14 + Math.abs(i) * 0.08, r: 2, fill: '#e8b877'}, g);
+        el('ellipse', {cx: -3, cy: -16, rx: 5, ry: 2, fill: C.white}, g);
+    }
+
+    function leaf(parent, x, y, s, color, rotate) {
+        const g = at(parent, x, y, s || 1, rotate || 0);
+        el('path', {d: 'M0 -14 L3 -7 L9 -9 L6 -2 L12 1 L5 3 L6 9 L0 6 L-6 9 L-5 3 L-12 1 L-6 -2 L-9 -9 L-3 -7 Z', fill: color || C.orange}, g);
+        el('path', {d: 'M0 6 L0 13', stroke: '#8a5a2b', 'stroke-width': '1.4'}, g);
+    }
+
+    function turkey(parent, x, y, s) { // standing on y
+        const g = at(parent, x, y, s || 1);
+        [C.red, C.orange, C.yellow, '#9a6b3f', C.orange, C.red].forEach(function (c, i) {
+            el('ellipse', {cx: 0, cy: -38, rx: 7, ry: 22, fill: c, transform: 'rotate(' + (-62 + i * 25) + ' 0 -22)'}, g);
+        });
+        el('ellipse', {cx: 0, cy: -20, rx: 15, ry: 17, fill: '#8a5a2b'}, g);
+        el('circle', {cx: 0, cy: -38, r: 8, fill: '#9a6b3f'}, g);
+        el('circle', {cx: -3, cy: -40, r: 1.4, fill: C.dark}, g);
+        el('circle', {cx: 3, cy: -40, r: 1.4, fill: C.dark}, g);
+        el('path', {d: 'M-2.5 -36 L2.5 -36 L0 -32 Z', fill: C.yellow}, g);
+        el('path', {d: 'M1 -35 q3 4 0 8', stroke: C.red, 'stroke-width': '2.2', fill: 'none'}, g);
+        el('path', {d: 'M-5 -3 L-5 0 M5 -3 L5 0', stroke: C.orange, 'stroke-width': '2'}, g);
+    }
+
     // ------------------------------------------------------------------ top elements (across the banner)
 
     function topSvg(banner, build) {
@@ -568,6 +671,7 @@
                 c: colors[Math.floor(Math.random() * colors.length)],
             };
             if (opts.dir === 'right') { p.x = initial ? Math.random() * w : -40; p.y = 40 + Math.random() * (h * 0.5); }
+            if (opts.dir === 'burst') { p.y = 30 + Math.random() * (h * 0.45); p.t = initial ? Math.random() : 0; }
             return p;
         }
         function resize() {
@@ -587,6 +691,7 @@
                 p.a += 0.012; p.rot += 0.02;
                 if (opts.dir === 'up') { p.y -= p.s; p.x += Math.sin(p.a) * 0.35; }
                 else if (opts.dir === 'right') { p.x += p.s; p.y += Math.sin(p.a) * 0.4; }
+                else if (opts.dir === 'burst') { p.t += 0.004 + p.s * 0.004; if (p.t > 1) { items[i] = spawn(false); return; } }
                 else { p.y += p.s; p.x += Math.sin(p.a) * 0.35; }
                 if (p.y > h + 20 || p.y < -20 || p.x > w + 60) items[i] = spawn(false);
                 opts.draw(ctx, p);
@@ -628,6 +733,25 @@
             ctx.strokeStyle = 'rgba(47,58,74,.6)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, 24);
             for (let i = 1; i <= 6; i++) ctx.quadraticCurveTo((i % 2 ? 8 : -8) + Math.sin(p.a * 2 + i) * 3, 24 + i * 9 - 4, Math.sin(p.a + i) * 3, 24 + i * 9);
             ctx.stroke(); ctx.restore();
+        },
+        shamrock: function (ctx, p) {
+            ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.scale(p.r / 6, p.r / 6); ctx.globalAlpha = .85; ctx.fillStyle = p.c;
+            for (let k = 0; k < 3; k++) { ctx.rotate(Math.PI * 2 / 3); ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(-9, -6, -9, -16, -2.5, -16); ctx.bezierCurveTo(0, -16, 0, -13, 0, -13); ctx.bezierCurveTo(0, -13, 0, -16, 2.5, -16); ctx.bezierCurveTo(9, -16, 9, -6, 0, 0); ctx.fill(); }
+            ctx.restore();
+        },
+        leaf: function (ctx, p) {
+            ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.scale(p.r / 6, p.r / 6); ctx.globalAlpha = .9; ctx.fillStyle = p.c; ctx.beginPath();
+            [[0, -14], [3, -7], [9, -9], [6, -2], [12, 1], [5, 3], [6, 9], [0, 6], [-6, 9], [-5, 3], [-12, 1], [-6, -2], [-9, -9], [-3, -7]].forEach(function (pt, i) { if (i) { ctx.lineTo(pt[0], pt[1]); } else { ctx.moveTo(pt[0], pt[1]); } });
+            ctx.fill(); ctx.restore();
+        },
+        firework: function (ctx, p) { // expanding burst that fades out
+            const t = p.t || 0, rad = p.r * 9 * Math.sqrt(t);
+            ctx.save(); ctx.globalAlpha = Math.max(0, 1 - t) * 0.85; ctx.fillStyle = p.c;
+            for (let k = 0; k < 14; k++) {
+                const ang = k * Math.PI * 2 / 14 + p.rot;
+                ctx.beginPath(); ctx.arc(p.x + Math.cos(ang) * rad, p.y + Math.sin(ang) * rad + t * 6, Math.max(0.6, 1.8 * (1 - t)), 0, 7); ctx.fill();
+            }
+            ctx.restore();
         },
         cloud: function (ctx, p) {
             ctx.save(); ctx.translate(p.x, p.y); ctx.scale(p.r / 6, p.r / 6); ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.beginPath();
@@ -752,6 +876,52 @@
                 web(g, 0, 0, 1.4); bat(g, 620, 70, 1.1); bat(g, 690, 110, 0.8);
             },
             desk: function (g) { pumpkin(g, 647, 555, 1.54); web(g, 842, 0, 1.4, true); bat(g, 150, 110, 1); },
+        },
+        // ---------------- United States
+        valentines: { // San Valentín (14 de febrero)
+            top: hangingTop(function (g, x, y, n) { if (n % 2) { rose(g, x, y, 0.9, C.red); } else { heart(g, x, y, 1, C.pink); } }),
+            particles: {draw: DRAW.petal, colors: [C.red, '#c81e3a', C.rose], size: 2.6, speed: 0.5, density: 30},
+            shelves: function (g) {
+                rose(g, 262, 150, 1.2, C.red); rose(g, 330, 112, 1.1, '#c81e3a'); rose(g, 393, 148, 1.2, C.red);
+                envelope(g, 556, 254, 1); rosesVase(g, 120, 555, 1.5); gift(g, 200, 555, 50, 30, C.red, C.pink);
+            },
+            desk: function (g) { rosesVase(g, 647, 555, 1.5); heart(g, 480, 140, 1.5, C.red); heart(g, 506, 118, 1, C.pink); },
+        },
+        st_patricks: { // San Patricio (17 de marzo)
+            top: pennantsTop(['#2a9d55', '#8fd694', C.white, C.gold]),
+            particles: {draw: DRAW.shamrock, colors: ['#2a9d55', '#3aa76d', '#8fd694'], size: 3.4, speed: 0.5, density: 32},
+            shelves: function (g) {
+                shamrock(g, 262, 150, 1.3); shamrock(g, 330, 112, 1.1, '#2a9d55'); shamrock(g, 393, 148, 1.3);
+                leprechaunHat(g, 556, 255, 1); potOfGold(g, 120, 555, 1.6);
+            },
+            desk: function (g) { leprechaunHat(g, 750, 452, 1.4); potOfGold(g, 647, 555, 1.4); shamrock(g, 75, 530, 1.6); },
+        },
+        memorial_day: { // Memorial Day (último lunes de mayo)
+            top: pennantsTop(['#c8323a', C.white, '#2b3f8c']),
+            particles: {draw: DRAW.sparkle, colors: [C.white, '#c8323a', '#2b3f8c'], size: 2.6, speed: 0.15, dir: 'up', density: 55, max: 22},
+            shelves: function (g) {
+                poppy(g, 262, 150, 1.3); poppy(g, 330, 112, 1.1); poppy(g, 393, 148, 1.3);
+                usFlag(g, 552, 254, 0.95); usFlag(g, 100, 553, 1.5);
+            },
+            desk: function (g) { usFlag(g, 630, 553, 1.4); poppy(g, 70, 545, 1.6); },
+        },
+        us_independence: { // 4 de julio
+            top: pennantsTop(['#c8323a', C.white, '#2b3f8c']),
+            particles: {draw: DRAW.firework, colors: ['#c8323a', C.white, '#4c6fd9', C.yellow], size: 6.5, speed: 0.6, dir: 'burst', density: 130, max: 10},
+            shelves: function (g) {
+                usFlag(g, 552, 254, 0.95); usFlag(g, 90, 553, 1.5); usFlag(g, 175, 553, 1.2);
+                star(g, 600, 60, 8, '#c8323a'); star(g, 640, 40, 5, C.white); star(g, 680, 70, 6, '#2b3f8c');
+            },
+            desk: function (g) { usFlag(g, 630, 553, 1.4); usFlag(g, 60, 553, 1.5); },
+        },
+        thanksgiving: { // Acción de Gracias (4.º jueves de noviembre)
+            top: hangingTop(function (g, x, y, n) { leaf(g, x, y + 2, 0.9, [C.orange, C.red, C.yellow, C.brown][n % 4], (n % 3 - 1) * 20); }),
+            particles: {draw: DRAW.leaf, colors: [C.orange, '#d9532b', C.yellow, '#b5651d'], size: 3.4, speed: 0.55, density: 30},
+            shelves: function (g) {
+                leaf(g, 262, 150, 1.3, C.orange, -20); leaf(g, 330, 112, 1.1, '#d9532b', 15); leaf(g, 393, 148, 1.3, C.yellow, 30);
+                pie(g, 556, 255, 1); turkey(g, 120, 555, 1.5); pumpkin(g, 200, 555, 1.1);
+            },
+            desk: function (g) { pie(g, 647, 555, 1.4); pumpkin(g, 75, 555, 1.4); leaf(g, 120, 535, 1.5, C.orange, 25); },
         },
         cartagena: { // Fiestas de la Independencia de Cartagena (11 de noviembre)
             top: pennantsTop([C.red, C.yellow, C.green]),

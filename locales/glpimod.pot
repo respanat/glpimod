@@ -141,6 +141,30 @@ msgstr ""
 msgid "1 December – 6 January (candles on 7 and 8 December)"
 msgstr ""
 
+msgid "10 – 14 February"
+msgstr ""
+
+msgid "14 – 17 March"
+msgstr ""
+
+msgid "Memorial Day"
+msgstr ""
+
+msgid "long weekend of the last Monday of May"
+msgstr ""
+
+msgid "Independence Day (4th of July)"
+msgstr ""
+
+msgid "1 – 4 July"
+msgstr ""
+
+msgid "Thanksgiving"
+msgstr ""
+
+msgid "week of the 4th Thursday of November"
+msgstr ""
+
 msgid "Small logo"
 msgstr ""
 
@@ -166,6 +190,12 @@ msgid "For dark backgrounds"
 msgstr ""
 
 msgid "User menu"
+msgstr ""
+
+msgid "Colombia and the Caribbean"
+msgstr ""
+
+msgid "United States"
 msgstr ""
 
 msgid "Branding"
